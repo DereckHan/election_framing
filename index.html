@@ -12,21 +12,8 @@
 </script>
 
 <svg class="chart"></svg>
-<script src="http://nad.webfactional.com/lingoscope/lib/jquery/jquery-2.0.3.js"></script>
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="http://nad.webfactional.com/lingoscope/lib/backbone/underscore.js"></script>
-<script src="http://nad.webfactional.com/lingoscope/lib/backbone/backbone.js"></script>
-<script src="js/barChart.js"></script>
+<script src="bin/script.entry.js"></script>
 
-<script>
-  var M = Backbone.Model.extend ({
-    defaults: {data: ""}
-  });
-  var model = new M();
-  var bar = new barChartView({model:model});
-  var data = "data/sample_day.json";
-  model.set("data", data);
-</script>
 
 </head>
 <body>
