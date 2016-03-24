@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>BarChart</title>
+    <title>Election Gossip</title>
     <!-- Some templates used by the views -->
     <script id="barChartViewTemplate" type="text/template">
         <div class="view_barChart"></div>
@@ -15,7 +15,31 @@
 
 <body>
     <div class="container">
+        <div class="page-header">
+            <h1>Election Gossip! <small></small></h1>
+        </div>
+        <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12" id="topic-container">
+            <h4 id="topicLabel">
+          Topics
+        </h4>
+            <div class="bs-example" data-example-id="simple-justified-button-group">
+                <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
+                    <a href="#" class="btn btn-default" role="button">Economy and Jobs</a>
+                    <a href="#" class="btn btn-default" role="button">Terrorism/Foreign Policy</a>
+                    <a href="#" class="btn btn-default" role="button">Federal Deficit and Budget</a>
+                    <a href="#" class="btn btn-default" role="button">Equality</a>
+                </div>
+                <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group with nested dropdown">
+                    <a href="#" class="btn btn-default" role="button">Health Care</a>
+                    <a href="#" class="btn btn-default" role="button">Immigration</a>
+                    <a href="#" class="btn btn-default" role="button">Environment</a>
+                    <a href="#" class="btn btn-default" role="button">Guns</a>
+                </div>
+            </div>
+        </div>
+        <br>
         <div class="row" id="category-container">
+            <h4 class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="categoryLabel">Category</h4>
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" id="categoryBtn">
                 <div class="btn-group">
                     <button type="button" class="btn btn-default dropdown-toggle" id="categoryMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">States
@@ -45,28 +69,13 @@
             </div>
         </div>
         <br>
-        <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12" id="topic-container">
-            <div class="bs-example" data-example-id="simple-justified-button-group">
-                <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
-                    <a href="#" class="btn btn-default" role="button">Economy and Jobs</a>
-                    <a href="#" class="btn btn-default" role="button">Terrorism/Foreign Policy</a>
-                    <a href="#" class="btn btn-default" role="button">Federal Deficit and Budget</a>
-                    <a href="#" class="btn btn-default" role="button">Equality</a>
-                </div>
-                <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group with nested dropdown">
-                    <a href="#" class="btn btn-default" role="button">Health Care</a>
-                    <a href="#" class="btn btn-default" role="button">Innigration</a>
-                    <a href="#" class="btn btn-default" role="button">Environment</a>
-                    <a href="#" class="btn btn-default" role="button">Guns</a>
-                </div>
-            </div>
-        </div>
-        <br>
         <div class="row" id="graph-container">
             <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12" id="barChart">
+                <h4 id="chartLabel">Sentiments</h4>
                 <svg class="chart"></svg>
             </div>
             <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12" id="tweetView">
+                <h4 id="tweetwList">Influential Comments</h4>
             </div>
         </div>
     </div>

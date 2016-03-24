@@ -1,0 +1,15 @@
+/*
+ * category-container
+ */
+
+#category-container .btn-group, button, ul {
+	width: 100%;
+}
+
+#category-container label {
+	font-family: inherit;
+    font-weight: 500;
+    line-height: 1.1;
+    color: inherit;
+	font-size: 18px;
+}
