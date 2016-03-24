@@ -8,7 +8,7 @@ var barChartView = Backbone.View.extend({
     tagName: "div",
     el: "#barChart",
     initialize: function() {
-        this.listenTo(this.model, "change", this.render);
+        // this.$el.html(this.template(this.model.attributes));
     },
     /*show: function(model) {
       alert(model.get("data"));
@@ -37,7 +37,7 @@ var barChartView = Backbone.View.extend({
             console.log(data);
 
             // Color scale
-            var color = ["#66B2FF", "#99FF99"];
+            var color = ["#286090", "#31B0D5"];
             var chartHeight = barHeight * data.length + gapBetweenGroups * daysample.term_count;
 
             var x = d3.scale.linear()
@@ -146,8 +146,8 @@ var barChartView = Backbone.View.extend({
                 .attr("transform", "translate(" + (spaceForLabels + chartWidth / 2) + ", " + -gapBetweenGroups / 2 + ")")
                 //.attr("transform", "translate(" + x(0) + ",0)")
                 .call(yAxis);
-
         });
+        this.$el.html(this.template(this.model.attributes));
     }
 });
 
