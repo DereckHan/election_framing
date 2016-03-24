@@ -8,11 +8,8 @@
     <script id="barChartViewTemplate" type="text/template">
         <div class="view_barChart"></div>
     </script>
-    <svg class="chart"></svg>
     <script src="bin/script.entry.js"></script>
-    <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 </head>
 
@@ -47,19 +44,30 @@
                 </div>
             </div>
         </div>
-        <div class="row" id="topic-container">
-            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" id="enj">enj</div>
-            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" id="tfp">tfp</div>
-            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" id="fdb">fdb</div>
-            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" id="equ">equ</div>
-            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" id="hec">hec</div>
-            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" id="imm">imm</div>
-            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" id="env">env</div>
-            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" id="gun">gun</div>
+        <br>
+        <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12" id="topic-container">
+            <div class="bs-example" data-example-id="simple-justified-button-group">
+                <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
+                    <a href="#" class="btn btn-default" role="button">Economy and Jobs</a>
+                    <a href="#" class="btn btn-default" role="button">Terrorism/Foreign Policy</a>
+                    <a href="#" class="btn btn-default" role="button">Federal Deficit and Budget</a>
+                    <a href="#" class="btn btn-default" role="button">Equality</a>
+                </div>
+                <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group with nested dropdown">
+                    <a href="#" class="btn btn-default" role="button">Health Care</a>
+                    <a href="#" class="btn btn-default" role="button">Innigration</a>
+                    <a href="#" class="btn btn-default" role="button">Environment</a>
+                    <a href="#" class="btn btn-default" role="button">Guns</a>
+                </div>
+            </div>
         </div>
+        <br>
         <div class="row" id="graph-container">
-            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12" id="barChart"></div>
-            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12" id="tweetView">test</div>
+            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12" id="barChart">
+                <svg class="chart"></svg>
+            </div>
+            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12" id="tweetView">
+            </div>
         </div>
     </div>
 </body>

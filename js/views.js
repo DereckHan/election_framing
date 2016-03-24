@@ -6,9 +6,10 @@ var d3 = require('d3');
 
 var barChartView = Backbone.View.extend({
     tagName: "div",
+    id: "barChart",
     el: "#barChart",
     initialize: function() {
-        // this.$el.html(this.template(this.model.attributes));
+        this.$el.html(this.template(this.model.attributes));
     },
     /*show: function(model) {
       alert(model.get("data"));
