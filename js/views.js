@@ -22,7 +22,7 @@ var barChartView = Backbone.View.extend({
             barHeight = 20,
             groupHeight = barHeight * 2, //2 scores
             gapBetweenGroups = 10,
-            spaceForLabels = 150,
+            spaceForLabels = 100,
             spaceForLegend = 150;
 
         d3.json(model.get("data"), function(daysample) {
