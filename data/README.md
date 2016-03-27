@@ -2,29 +2,54 @@
 
 ## format
 
-Json obj
-- `term_count`: `int`
-- `time_frame`: `int`
-- `date_start`: `string`
-- `date`: `string`
-- `term_set`: `list`
-	+ `term`: `string`
-    + `scores_1`: `list`
-    + `scores_2`: `list`
+Json state
+- `state_set`: `list`
+	+ 'state': 'string'
+	+ 'topic_set':'list':
+		+'topic':'string'
+		+'time_set':'list':
+			+'time_type':'string'
+			+'term_set':'list':
+				+'term':'string'
+				+'score_set':'list':
+					+'score':'float'
 
+Json candidate
+- `candidate_set`: `list`
+	+ 'candidate': 'string'
+	+ 'topic_set':'list':
+		+'topic':'string'
+		+'time_set':'list':
+			+'time_type':'string'
+			+'term_set':'list':
+				+'term':'string'
+				+'score_set':'list':
+					+'score':'float'
+
+Json party
+- `party_set`: `list`
+	+ 'party': 'string'
+	+ 'topic_set':'list':
+		+'topic':'string'
+		+'time_set':'list':
+			+'time_type':'string'
+			+'term_set':'list':
+				+'term':'string'
+				+'score_set':'list':
+					+'score':'float'
 
 ## description
 
-`term_count`: total count of terms, 5 for most situation;
+`state_set`: 52 states for the election;
 
-`time_frame`: length of the time frame ({day:1, week:7, month: 30}), equals to the length of score list;
+`candidate_set`: 26 candidates for the election;
 
-`date`: present date;
+`party_set`: Democrate and Republican;
 
-`date_start`: begining date of the time frame. if time frame equals to 1, `date_start` equals to `date`;
+`topic_set`: list of 8 'topic' object;
 
-`term_set`: list of `term object`;
+`time_set`: day,week,month;
 
-each `term object` is constructed by:
-- `term`: keyword;
-- `scores_1/2`: sentimental scores of two groups (length equals to `time_frame`), ordered by time from `date_start` to `date`.
+`term_set`: list of 5 'term' object for the selection;
+
+`score_set`: list of 7 'score' object for the latest week;
