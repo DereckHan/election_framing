@@ -6,37 +6,37 @@ Json state
 - `state_set`: `list`
 	+ 'state': 'string'
 	+ 'topic_set':'list':
-		+'topic':'string'
-		+'time_set':'list':
-			+'time_type':'string'
-			+'term_set':'list':
-				+'term':'string'
-				+'score_set':'list':
-					+'score':'float'
+		+ 'topic':'string'
+		+ 'time_set':'list':
+			+ 'time_type':'string'
+			+ 'term_set':'list':
+				+ 'term':'string'
+				+ 'score_set':'list':
+					+ 'score':'float'
 
 Json candidate
 - `candidate_set`: `list`
 	+ 'candidate': 'string'
 	+ 'topic_set':'list':
-		+'topic':'string'
-		+'time_set':'list':
-			+'time_type':'string'
-			+'term_set':'list':
-				+'term':'string'
-				+'score_set':'list':
-					+'score':'float'
+		+ 'topic':'string'
+		+ 'time_set':'list':
+			+ 'time_type':'string'
+			+ 'term_set':'list':
+				+ 'term':'string'
+				+ 'score_set':'list':
+					+ 'score':'float'
 
 Json party
 - `party_set`: `list`
 	+ 'party': 'string'
 	+ 'topic_set':'list':
-		+'topic':'string'
-		+'time_set':'list':
-			+'time_type':'string'
-			+'term_set':'list':
-				+'term':'string'
-				+'score_set':'list':
-					+'score':'float'
+		+ 'topic':'string'
+		+ 'time_set':'list':
+			+ 'time_type':'string'
+			+ 'term_set':'list':
+				+ 'term':'string'
+				+ 'score_set':'list':
+					+ 'score':'float'
 
 ## description
 
