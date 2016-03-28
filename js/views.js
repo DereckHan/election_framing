@@ -6,8 +6,8 @@ var d3 = require('d3');
 
 var barChartView = Backbone.View.extend({
     tagName: "div",
-    id: "barChart",
-    el: "#barChart",
+    id: "chart",
+    el: "#chart",
     initialize: function() {
         this.$el.html(this.template(this.model.attributes));
     },
@@ -24,22 +24,27 @@ var barChartView = Backbone.View.extend({
             gapBetweenGroups = 10,
             spaceForLabels = 100,
             spaceForLegend = 150;
+        var term_count = 5;
+        //this.$el.append("<div class='barchart-view'><svg></svg></div>");
+        //var bar_svg = d3.select(this.el).select(".barchart-view svg");
+        //var bar_view_width = 150;
+        //var bar_view_height = 40;
+        //var bar_scale = d3.scale.linear().domain([0, this.max_value]).range([0.5, 2*bar_view_width/3]);
 
+        //console.log(bar_svg);
         d3.json(model.get("data"), function(daysample) {
-            //console.log(daysample);
-
             // Data processing
             var data = [];
-            var compare = ["score1", "score2"];
-            for (var i = 0; i < daysample.term_count; i++) {
-                data.push(daysample.term_set[i].scores_1[0]);
-                data.push(daysample.term_set[i].scores_2[0]);
+            //var compare = ["score1", "score2"];
+            for (var i = 0; i < term_count; i++) {
+                data.push(daysample.state_set[0]["Alabama"].topic_set[0].time_set[0].term_set[i].score_set[29]);
+                data.push(daysample.state_set[1]["Alaska"].topic_set[0].time_set[0].term_set[i].score_set[29]);
             }
             console.log(data);
-
+            console.log(daysample);
             // Color scale
             var color = ["#286090", "#31B0D5"];
-            var chartHeight = barHeight * data.length + gapBetweenGroups * daysample.term_count;
+            var chartHeight = barHeight * data.length + gapBetweenGroups * term_count;
 
             var x = d3.scale.linear()
                 .domain([0, d3.max(data)])
@@ -51,7 +56,7 @@ var barChartView = Backbone.View.extend({
                 .range([chartHeight + gapBetweenGroups, 0]);
             y.domain(data.map(function(d, i) {
                 if (i % 2 == 0)
-                    return daysample.term_set[i / 2].term;
+                    return daysample.state_set[0]["Alabama"].topic_set[0].time_set[0].term_set[i / 2].term;
             }))
 
             var xAxis = d3.svg.axis()
@@ -80,7 +85,7 @@ var barChartView = Backbone.View.extend({
                 })
                 .attr("y", function(d, i) {
                     if (i % 2 == 0)
-                        return daysample.term_set[i / 2].term;
+                        return daysample.state_set[0]["Alabama"].topic_set[0].time_set[0].term_set[i / 2].term;
                 })
                 .attr("transform", function(d, i) {
                     if (d > 0)
@@ -129,7 +134,7 @@ var barChartView = Backbone.View.extend({
                 .attr("dy", ".35em")
                 .text(function(d, i) {
                     if (i % 2 === 0) {
-                        return daysample.term_set[Math.floor(i / 2)].term;
+                        return daysample.state_set[0]["Alabama"].topic_set[0].time_set[0].term_set[Math.floor(i / 2)].term;
                     } else
                         return ""
                 })

@@ -5,7 +5,7 @@ var d3 = require('d3');
 require('../css/style.css');
 window.$ = window.jQuery = $;
 
-var data = "../data/sample_day.json";
+var data = "../data/state.json";
 var conditions = new Model.Conditions();
 var bar = new View.barChartView({
     model: conditions
