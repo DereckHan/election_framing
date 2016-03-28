@@ -1,9 +1,7 @@
 <!DOCTYPE html>
-<link rel="stylesheet" href="css/barchart_style.css" type="text/css">
 
 <head>
     <meta charset="utf-8">
-    <title>Election Gossip</title>
     <!-- Some templates used by the views -->
     <script id="barChartViewTemplate" type="text/template">
         <div class="view_barChart"></div>
@@ -15,12 +13,13 @@
 
 <body>
     <div class="container">
-        <div class="page-header">
-            <h1>Election Gossip! <small></small></h1>
+        <div class="row jumbotron" id="banner">
         </div>
-        <div class="row" id="topic-container">
-            <h4 class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="topicLabel">Topics</h4>
-            <div class="bs-example col-lg-12 col-md-12 col-sm-12 col-xs-12" data-example-id="simple-justified-button-group">
+        <div class="row panel panel-info" id="topic">
+            <div class="panel-heading">
+                <h4 class="panel-title">Select a topic</h4>
+            </div>
+            <div class="panel-body">
                 <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
                     <a href="#" class="btn btn-default" role="button">Economy and Jobs</a>
                     <a href="#" class="btn btn-default" role="button">Terrorism/Foreign Policy</a>
@@ -35,46 +34,112 @@
                 </div>
             </div>
         </div>
-        <br>
-        <div class="row" id="category-container">
-            <h4 class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="categoryLabel">Category</h4>
-            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" id="categoryBtn">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default dropdown-toggle" id="categoryMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">States
-                        <span class="caret"></span></button>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">States</a></li>
-                        <li><a href="#">Parties</a></li>
-                        <li><a href="#">Candidates</a></li>
-                    </ul>
-                </div>
+        <div class="row panel panel-info" id="category-container">
+            <div class="panel-heading">
+                <h4 class="panel-title">Select a category</h4>
             </div>
-            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6" id="optionOneBtn">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-primary dropdown-toggle" id="optionOneMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pennsylvania
-                        <span class="caret"></span></button>
-                    <ul class="dropdown-menu">
-                    </ul>
+            <div class="row panel-body">
+                <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12" id="category">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" id="category-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">States
+                            <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">States</a></li>
+                            <li><a href="#">Parties</a></li>
+                            <li><a href="#">Candidates</a></li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6" id="optionTwoBtn">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-info dropdown-toggle" id="optionTwoMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Washington
-                        <span class="caret"></span></button>
-                    <ul class="dropdown-menu">
-                    </ul>
+                <div class="col-lg-3 col-md-3 col-sm-5 col-xs-5" id="option-1">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary dropdown-toggle" id="option-1-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pennsylvania
+                            <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-1 col-md-1 col-sm-2 col-xs-2">
+                    <span class="label label-danger" id="vs">vs.</span>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-5 col-xs-5" id="option-2">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-info dropdown-toggle" id="option-2-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Washington
+                            <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
-        <br>
-        <div class="row" id="graph-container">
-            <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12" id="barChart">
-                <h4 id="chartLabel">Sentiments</h4>
-                <svg class="chart"></svg>
+        <div class="row panel panel-info" id="content">
+            <div class="panel-heading">
+                <h4 class="panel-title">Trending</h4></div>
+            <div class="row panel-body">
+                <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12" id="charts">
+                    <div id="bar">
+                        <div id="bar-head">
+                            <ul class="nav nav-tabs nav-justified">
+                                <li role="presentation" class="active"><a href="#">Day</a></li>
+                                <li role="presentation"><a href="#">Week</a></li>
+                                <li role="presentation"><a href="#">Month</a></li>
+                            </ul>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <p id="bar-notice">
+                                    Note: Scores below stand for evaluation from those two group of users toward each keywords. Ranging from -1 to 1, positive valuse means positive evaluation and vice versa.
+                                </p>
+                            </div>
+                        </div>
+                        <div id="bar-chart">
+                        </div>
+                    </div>
+                    <div id="keywords">
+                        <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
+                            <a href="#" class="btn btn-default" role="button">keyword1</a>
+                            <a href="#" class="btn btn-default" role="button">keyrowd2</a>
+                            <a href="#" class="btn btn-default" role="button">keyrowd3</a>
+                            <a href="#" class="btn btn-default" role="button">keyrowd4</a>
+                            <a href="#" class="btn btn-default" role="button">keyrowd5</a>
+                        </div>
+                    </div>
+                    <div id="line">
+                        <div id="line-chart">
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <p id="line-notice">
+                                    Note: The line graph shows the weekly/monthly trend of dach keywords.
+                                </p>
+                            </div>
+                        </div>
+                        <div id="line-footer">
+                            <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
+                                <a href="#" class="btn btn-default" role="button">Week</a>
+                                <a href="#" class="btn btn-default" role="button">Month</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12" id="tweets">
+                    <div id="tweet-content">
+                        <a class="twitter-timeline" data-dnt="true" href="https://twitter.com/hashtag/Election2016" data-widget-id="714344335500832768">#Election2016 Tweets</a>
+                        <script>
+                        ! function(d, s, id) {
+                            var js, fjs = d.getElementsByTagName(s)[0],
+                                p = /^http:/.test(d.location) ? 'http' : 'https';
+                            if (!d.getElementById(id)) {
+                                js = d.createElement(s);
+                                js.id = id;
+                                js.src = p + "://platform.twitter.com/widgets.js";
+                                fjs.parentNode.insertBefore(js, fjs);
+                            }
+                        }(document, "script", "twitter-wjs");
+                        </script>
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12" id="tweetView">
-                <h4 id="tweetwList">Influential Comments</h4>
-            </div>
+            <div class="panel-footer">Interactive System Design.</div>
         </div>
     </div>
 </body>

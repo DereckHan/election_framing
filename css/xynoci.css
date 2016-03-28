@@ -1,0 +1,73 @@
+/* temple */
+.container {
+    max-width: 900px;
+}
+#banner {
+    margin-bottom: 0px;
+}
+
+/*
+ * category-container
+ */
+#category-container .btn-group, button, ul {
+    width: 100%;
+}
+
+#category-container label {
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.1;
+    color: inherit;
+    font-size: 18px;
+}
+#option-1 {
+    padding-right: 0px;
+}
+#option-2 {
+    padding-left: 0px;
+}
+#vs {
+    text-align:center;
+    display:block;
+    vertical-align: center;
+    line-height: 29px;
+}
+/*
+ * content
+ */
+ #charts {
+    
+ }
+.panel {
+    margin-bottom: 0px !important;
+}
+.panel p {
+    margin-bottom: 0px !important;
+}
+/*
+ * bar
+ */
+#bar #bar-chart {
+    height: 300px;
+    background-color: #eee;
+} /* temple */
+
+
+/*
+ * #line
+ */
+#line-footer ul {
+    margin: 0 auto;
+}
+
+#line-chart {
+    height: 300px;
+    background-color: #eee;
+} /* temple */
+
+/*
+ * tweet
+ */
+#tweets #twitter-widget-0 .timeline-Widget{
+    width: 100% !important;
+}

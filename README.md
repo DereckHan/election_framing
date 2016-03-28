@@ -18,3 +18,10 @@ With [webpack](https://webpack.github.io/) do:
 ```
 webpack
 ```
+
+## Notes
+
+python http server
+```
+python -m SimpleHTTPServer 8080
+```
