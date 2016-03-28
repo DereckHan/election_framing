@@ -1,6 +1,6 @@
 /* temple */
 .container {
-    max-width: 900px;
+    max-width: 992px;
 }
 #banner {
     margin-bottom: 0px;
@@ -27,10 +27,10 @@
     padding-left: 0px;
 }
 #vs {
-    text-align:center;
+    text-align: center;
     display:block;
-    vertical-align: center;
-    line-height: 29px;
+    line-height: 27px;
+    font-size: 14px;
 }
 /*
  * content
