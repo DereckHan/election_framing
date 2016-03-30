@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <head>
     <meta charset="utf-8">
     <!-- Some templates used by the views -->
@@ -19,17 +20,31 @@
                 <h4 class="panel-title">Select a topic</h4>
             </div>
             <div class="panel-body">
-                <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
-                    <a href="#" class="btn btn-default" role="button">Economy and Jobs</a>
-                    <a href="#" class="btn btn-default" role="button">Terrorism/Foreign Policy</a>
-                    <a href="#" class="btn btn-default" role="button">Federal Deficit and Budget</a>
-                    <a href="#" class="btn btn-default" role="button">Equality</a>
-                </div>
-                <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group with nested dropdown">
-                    <a href="#" class="btn btn-default" role="button">Health Care</a>
-                    <a href="#" class="btn btn-default" role="button">Immigration</a>
-                    <a href="#" class="btn btn-default" role="button">Environment</a>
-                    <a href="#" class="btn btn-default" role="button">Guns</a>
+                <div class="btn-group" id="oyoo" role="group" data-toggle="buttons">
+                    <label class="btn btn-default active">
+                        <input class="topic" type="radio" name="options" id="eco" autocomplete="off" checked>Economy
+                    </label>
+                    <label class="btn btn-default">
+                        <input class="topic" type="radio" name="options" id="ter" autocomplete="off">Foreign Policy
+                    </label>
+                    <label class="btn btn-default">
+                        <input class="topic" type="radio" name="options" id="fed" autocomplete="off">Federal Budget
+                    </label>
+                    <label class="btn btn-default">
+                        <input class="topic" type="radio" name="options" id="equ" autocomplete="off">Equality
+                    </label>
+                    <label class="btn btn-default">
+                        <input class="topic" type="radio" name="options" id="hea" autocomplete="off">Health Care
+                    </label>
+                    <label class="btn btn-default">
+                        <input class="topic" type="radio" name="options" id="imm" autocomplete="off">Immigration
+                    </label>
+                    <label class="btn btn-default">
+                        <input class="topic" type="radio" name="options" id="env" autocomplete="off">Environment
+                    </label>
+                    <label class="btn btn-default">
+                        <input class="topic" type="radio" name="options" id="gun" autocomplete="off">Guns
+                    </label>
                 </div>
             </div>
         </div>
@@ -42,7 +57,7 @@
                     <div class="btn-group">
                         <button type="button" class="btn btn-default dropdown-toggle" id="category-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">States
                             <span class="caret"></span></button>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu" id="category-dropdown">
                             <li><a href="#">States</a></li>
                             <li><a href="#">Parties</a></li>
                             <li><a href="#">Candidates</a></li>
@@ -53,7 +68,7 @@
                     <div class="btn-group">
                         <button type="button" class="btn btn-primary dropdown-toggle" id="option-1-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pennsylvania
                             <span class="caret"></span></button>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu" id="option-1-dropdown">
                         </ul>
                     </div>
                 </div>
@@ -64,7 +79,7 @@
                     <div class="btn-group">
                         <button type="button" class="btn btn-info dropdown-toggle" id="option-2-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Washington
                             <span class="caret"></span></button>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu" id="option-2-dropdown">
                         </ul>
                     </div>
                 </div>
@@ -91,7 +106,6 @@
                             </div>
                         </div>
                         <div id="bar-chart">
-                            
                         </div>
                     </div>
                     <div id="keywords">
