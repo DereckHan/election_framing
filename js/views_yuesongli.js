@@ -12,7 +12,7 @@ var BarSetView = Backbone.View.extend({
         $("#bar-chart")
     }),
     events: {
-        "click a": "getTopic",
+        "change input[type=radio]": "getTopic",
         "click li a": "getCategory",
         "click #option-1-menu": "getOption1",
         "click #option-2-menu": "getOption2"
@@ -51,7 +51,6 @@ var BarSetView = Backbone.View.extend({
             .append("g")
             .attr("class", "graph")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-        //svg.selectAll(".legend").remove();
         //svg.selectAll(".bar").remove();
 
         var term_count = 5;
@@ -196,11 +195,11 @@ var BarSetView = Backbone.View.extend({
     },
     getTopic: function(event) {
         var selectTopic = $(event.currentTarget);
-        //console.log(selectTopic[0].childNodes[0].data);
-        var Topics = ["Economy and Jobs", "Terrorism/Foreign Policy", "Federal Deficit and Budget", "Equality", "Health Care", "Immigration", "Environment", "Guns"];
+        console.log(selectTopic);
+        var Topics = ["Economy", "Foreign Policy", "Federal Budget", "Equality", "Health Care", "Immigration", "Environment", "Guns"];
         var i = 0;
         for (i = 0; i < 8; i++) {
-            if (Topics[i] == selectTopic[0].childNodes[0].data)
+            if (Topics[i] == selectTopic[0].labels[0].childNodes[1].nextSibling.data)
                 break;
         }
         this.model.set({ "topic": i });

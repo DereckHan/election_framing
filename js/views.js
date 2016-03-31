@@ -7,7 +7,10 @@ var d3 = require('d3');
 var barChartView = Backbone.View.extend({
     //tagName: "div",
     //id: "bar-chart",
-    el: "#bar-chart",
+    el: $(document).ready(function() {
+        //console.log($("#bar-chart")); 
+        $("#bar-chart")
+    }),
     initialize: function() {
         this.$el.html(this.template(this.model.attributes));
     },
@@ -36,7 +39,7 @@ var barChartView = Backbone.View.extend({
         var yAxisLeft = d3.svg.axis().scale(y).ticks(4).orient("left");
 
         $(document).ready(function() {
-            var svg = d3.select("#bar-chart").append("svg")
+            var svg = d3.select(".barchart-view")
                 .attr("width", width + margin.left + margin.right)
                 .attr("height", height + margin.top + margin.bottom)
                 .append("g")
