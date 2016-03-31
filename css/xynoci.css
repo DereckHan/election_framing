@@ -1,16 +1,21 @@
 /* temple */
 .container {
-    max-width: 992px;
+    
 }
 #banner {
     margin-bottom: 0px;
 }
 
 /*
+ * banner
+ */
+
+/*
  * category-container
  */
 #category-container .btn-group, button, ul {
     width: 100%;
+    margin-bottom: 5px;
 }
 
 #category-container label {
@@ -68,6 +73,6 @@
 /*
  * tweet
  */
-#tweets #twitter-widget-0 .timeline-Widget{
+#tweets #twitter-widget-0 {
     width: 100% !important;
 }
