@@ -7,11 +7,12 @@ var url_root = '';
 
 var Conditions = Backbone.Model.extend({
     defaults: {
-        majorCategory: "States",
-        optionOne: "stateOne",
-        optionTwo: "stateTwo",
-        topic: "enj",
-        time: "03/21/2016"
+        topic: 0,
+        category: "States",
+        option_1: "Pennsylvania",
+        option_2: "Washington",
+        url: "../data/",
+        data: "../data/state.json"
     },
     constructor: function() {
         arguments.parse = true;
