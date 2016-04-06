@@ -31,8 +31,17 @@ var BarSetView = Backbone.View.extend({
                 bottom: 70,
                 left: 30
             },
-            width = 630 - margin.left - margin.right,
+            width = 680 - margin.left - margin.right,
             height = 340 - margin.top - margin.bottom;
+        /*var aspect = 680 / 340,
+            chart = $("#bar-chart");
+
+        $(window).on("resize", function() {
+            var targetWidth = chart.parent().width();
+            //width = targetWidth;
+            //height = targetWidth / aspect;
+            //console.log(width);
+        });*/
 
         var x = d3.scale.ordinal()
             .rangeRoundBands([0, width], .1);
@@ -46,8 +55,9 @@ var BarSetView = Backbone.View.extend({
 
 
         var svg = d3.select(".barchart-view")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
+            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox", "0 0 620 290")
+            .classed("svg-content-responsive", true)
             .append("g")
             .attr("class", "graph")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -60,7 +70,7 @@ var BarSetView = Backbone.View.extend({
         var candidates = ["Hillary Clinton", "Ted Cruz"];
 
         var topic = model.get('topic');
-        
+
         var color = ["steelblue", "red"];
 
         d3.json(model.get("data"), function(data) {
@@ -115,6 +125,7 @@ var BarSetView = Backbone.View.extend({
                 .text("Sentimental Score");
 
             // bars
+
             bars = svg.selectAll(".bar").data(Data).enter();
             bars.append("rect")
                 .attr("class", "bar1")
