@@ -4,39 +4,39 @@
 
 Json state
 - `state_set`: `list`
-	+ 'state': 'string'
-	+ 'topic_set':'list':
-		+ 'topic':'string'
-		+ 'time_set':'list':
-			+ 'time_type':'string'
-			+ 'term_set':'list':
-				+ 'term':'string'
-				+ 'score_set':'list':
-					+ 'score':'float'
+	+ `state`: `string`
+	+ `topic_set`:`list`:
+		+ `topic`:`string`
+		+ `time_set`:`list`:
+			+ `time_type`:`string`
+			+ `term_set`:`list`:
+				+ `term`:`string`
+				+ `score_set`:`list`:
+					+ `score`:`float`
 
 Json candidate
 - `candidate_set`: `list`
-	+ 'candidate': 'string'
-	+ 'topic_set':'list':
-		+ 'topic':'string'
-		+ 'time_set':'list':
-			+ 'time_type':'string'
-			+ 'term_set':'list':
-				+ 'term':'string'
-				+ 'score_set':'list':
-					+ 'score':'float'
+	+ `candidate`: `string`
+	+ `topic_set`:`list`:
+		+ `topic`:`string`
+		+ `time_set`:`list`:
+			+ `time_type`:`string`
+			+ `term_set`:`list`:
+				+ `term`:`string`
+				+ `score_set`:`list`:
+					+ `score`:`float`
 
 Json party
 - `party_set`: `list`
-	+ 'party': 'string'
-	+ 'topic_set':'list':
-		+ 'topic':'string'
-		+ 'time_set':'list':
-			+ 'time_type':'string'
-			+ 'term_set':'list':
-				+ 'term':'string'
-				+ 'score_set':'list':
-					+ 'score':'float'
+	+ `party`: `string`
+	+ `topic_set`:`list`:
+		+ `topic`:`string`
+		+ `time_set`:`list`:
+			+ `time_type`:`string`
+			+ `term_set`:`list`:
+				+ `term`:`string`
+				+ `score_set`:`list`:
+					+ `score`:`float`
 
 ## description
 
@@ -46,10 +46,10 @@ Json party
 
 `party_set`: Democrate and Republican;
 
-`topic_set`: list of 8 'topic' object;
+`topic_set`: list of 8 `topic` object;
 
 `time_set`: day,week,month;
 
-`term_set`: list of 5 'term' object for the selection;
+`term_set`: list of 5 `term` object for the selection;
 
-`score_set`: list of 7 'score' object for the latest week;
+`score_set`: list of 7 `score` object for the latest week;
