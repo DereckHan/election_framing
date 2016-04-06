@@ -71,7 +71,7 @@ var BarSetView = Backbone.View.extend({
 
         var topic = model.get('topic');
 
-        var color = ["steelblue", "red"];
+        var color = ["lightskyblue", "pink"];
 
         d3.json(model.get("data"), function(data) {
             console.log(data);
@@ -176,7 +176,7 @@ var BarSetView = Backbone.View.extend({
                 .attr('transform', function(d, i) {
                     var legend_height = legendRectSize + legendSpacing;
                     var legend_width = (legendRectSize + legendWordSize) * 2;
-                    var horz = width - (i + 1) * (legend_width + legendSpacing * 2);
+                    var horz = width + (i - 2) * (legend_width + legendSpacing * 2);
                     //var vert = i * height - offset;
                     return 'translate(' + horz + ',' + -(legendRectSize * 2) + ')';
                 });
