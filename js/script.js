@@ -16,16 +16,16 @@ require('../css/barchart_style.css');
 
 $(document).ready(function() {
     //var data = "../data/state.json";
-    // var conditions = new Model.Conditions();
-    // var bar = new View.BarSetView({
-    //     model: conditions
-    // });
-    // bar.listenTo(conditions, "change", bar.clear);
-    // bar.listenTo(conditions, "change", bar.render);
+    var conditions = new model_t.Conditions();
+    var bar = new View.BarSetView({
+        model: conditions
+    });
+    bar.listenTo(conditions, "change", bar.clear);
+    bar.listenTo(conditions, "change", bar.render);
     //conditions.set("data", data);
 
 
-    var state = new model_t.State();
+    /*var state = new model_t.State();
     var state_data = state.fetch({
         success: function(model, response, options) {
             attributes = model.attributes;
@@ -39,5 +39,5 @@ $(document).ready(function() {
             var key_set = Object.keys(terms);
             console.log(key_set);
         }
-    });
+    });*/
 });

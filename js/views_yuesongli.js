@@ -64,42 +64,32 @@ var BarSetView = Backbone.View.extend({
         //svg.selectAll(".bar").remove();
 
         var term_count = 5;
-        var comparisons = [];
-        var states = ["Alabama", "Alaska"];
-        var parties = ["Democrat", "Republican"];
-        var candidates = ["Hillary Clinton", "Ted Cruz"];
-
-        var topic = model.get('topic');
-
         var color = ["lightskyblue", "pink"];
-
+        var att = model.attributes;
+        console.log(att);
+        console.log(model.get("data"));
         d3.json(model.get("data"), function(data) {
             console.log(data);
+            if (att["category"] == "Parties") {
+                att["option_1"] = "Democrat";
+                att["option_2"] = "Republican";
+            } else if (att["category"] == "Candidates") {
+                att["option_1"] = "Hillary Clinton";
+                att["option_2"] = "Ted Cruz";
+            }
+            else {
+                att["option_1"] = "Pennsylvania";
+                att["option_2"] = "Washington";
+            }
+            var comparisons = [att["option_1"], att["option_2"]];
             //Process data
             var Data = [{}, {}, {}, {}, {}];
-            if (model.get("category") == "States") {
-                for (i = 0; i < term_count; i++) {
-                    Data[i]["keyword"] = data.state_set[0][states[0]].topic_set[0].time_set[0].term_set[i].term;
-                    Data[i][states[0]] = data.state_set[0][states[0]].topic_set[0].time_set[0].term_set[i].score_set[29];
-                    Data[i][states[1]] = data.state_set[1][states[1]].topic_set[0].time_set[0].term_set[i].score_set[29];
-                    comparisons = states;
-                }
-            } else if (model.get("category") == "Parties") {
-                for (i = 0; i < term_count; i++) {
-                    Data[i]["keyword"] = data.party_set[0][parties[0]].topic_set[0].time_set[0].term_set[i].term;
-                    Data[i][parties[0]] = data.party_set[0][parties[0]].topic_set[0].time_set[0].term_set[i].score_set[29];
-                    Data[i][parties[1]] = data.party_set[1][parties[1]].topic_set[0].time_set[0].term_set[i].score_set[29];
-                    comparisons = parties;
-                }
-            } else {
-                for (i = 0; i < term_count; i++) {
-                    Data[i]["keyword"] = data.candidate_set[0][candidates[0]].topic_set[0].time_set[0].term_set[i].term;
-                    Data[i][candidates[0]] = data.candidate_set[0][candidates[0]].topic_set[0].time_set[0].term_set[i].score_set[29];
-                    Data[i][candidates[1]] = data.candidate_set[1][candidates[1]].topic_set[0].time_set[0].term_set[i].score_set[29];
-                    comparisons = candidates;
-                }
+            for (i = 0; i < term_count; i++) {
+                Data[i]["keyword"] = Object.keys(data[att["option_1"]][att["topic"]]["day"].term_set)[i];
+                Data[i][att["option_1"]] = data[att["option_1"]][att["topic"]]["day"].term_set[Data[i]["keyword"]][29];
+                Data[i][att["option_2"]] = data[att["option_2"]][att["topic"]]["day"].term_set[Data[i]["keyword"]][29];
             }
-            //console.log(Data);
+            console.log(Data);
 
             // svg domain
             x.domain(Data.map(function(d) {
@@ -134,17 +124,16 @@ var BarSetView = Backbone.View.extend({
                 })
                 .attr("width", x.rangeBand() / 2)
                 .attr("y", function(d) {
-                    //console.log(d[comparisons[0]]);
-                    if (d[comparisons[0]] < 0) {
+                    if (d[att["option_1"]] < 0) {
                         return height / 2;
                     } else
-                        return height / 2 - y(-d[comparisons[0]]) / 2;
+                        return height / 2 - y(-d[att["option_1"]]) / 2;
                 })
                 .attr("height", function(d, i, j) {
-                    if (d[comparisons[0]] < 0)
-                        return y(d[comparisons[0]]) / 2;
+                    if (d[att["option_1"]] < 0)
+                        return y(d[att["option_1"]]) / 2;
                     else
-                        return y(-d[comparisons[0]]) / 2;
+                        return y(-d[att["option_1"]]) / 2;
                 });
             bars.append("rect")
                 .attr("class", "bar2")
@@ -153,21 +142,21 @@ var BarSetView = Backbone.View.extend({
                 })
                 .attr("width", x.rangeBand() / 2)
                 .attr("y", function(d) {
-                    if (d[comparisons[1]] < 0) {
+                    if (d[att["option_2"]] < 0) {
                         return height / 2;
                     } else
-                        return height / 2 - y(-d[comparisons[1]]) / 2;
+                        return height / 2 - y(-d[att["option_2"]]) / 2;
                 })
                 .attr("height", function(d, i, j) {
-                    if (d[comparisons[1]] < 0)
-                        return y(d[comparisons[1]]) / 2;
+                    if (d[att["option_2"]] < 0)
+                        return y(d[att["option_2"]]) / 2;
                     else
-                        return y(-d[comparisons[1]]) / 2;
+                        return y(-d[att["option_2"]]) / 2;
                 });
 
             // Draw legend
             var legendRectSize = 18,
-                legendWordSize = 30,
+                legendWordSize = 40,
                 legendSpacing = 4;
 
             var legend = bars.append("g")
@@ -206,28 +195,25 @@ var BarSetView = Backbone.View.extend({
     },
     getTopic: function(event) {
         var selectTopic = $(event.currentTarget);
-        console.log(selectTopic);
-        var Topics = ["Economy", "Foreign Policy", "Federal Budget", "Equality", "Health Care", "Immigration", "Environment", "Guns"];
+        //console.log(selectTopic[0].id);
+        /*var Topics = ["eco", "ter", "fed", "equ", "hea", "imm", "env", "gun"];
         var i = 0;
         for (i = 0; i < 8; i++) {
-            if (Topics[i] == selectTopic[0].labels[0].childNodes[1].nextSibling.data)
+            if (Topics[i] == selectTopic[0].id) 
                 break;
-        }
-        this.model.set({ "topic": i });
-        //console.log(this.model.get("topic"));
+        }*/
+        this.model.set({ "topic": selectTopic[0].id });
+        console.log(this.model.get("topic"));
     },
     getCategory: function(event) {
-        //console.log(event);
         var selectCategory = $(event.currentTarget);
-        //console.log(selectCategory[0].childNodes[0].data);
         this.model.set({ "category": selectCategory[0].childNodes[0].data });
-        //console.log(this.model.get("category") == "States");
-        this.model.set({ "data": this.model.get('url') + "state.json" });
-        if (this.model.get("category") == "Parties")
-            this.model.set({ "data": this.model.get('url') + "party.json" });
-        else if (this.model.get("category") == "Candidates")
-            this.model.set({ "data": this.model.get('url') + "candidate.json" });
-        //console.log(this.model.get("data"));
+        this.model.set({ "data": this.model.get('url') + "state_full.json" });
+        if (this.model.get("category") == "Parties") {
+            this.model.set({ "data": this.model.get('url') + "party_full.json" });
+        } else if (this.model.get("category") == "Candidates") {
+            this.model.set({ "data": this.model.get('url') + "candidate_full.json" });
+        }
     },
     clear: function() {
         this.model.destroy();

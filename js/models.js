@@ -15,12 +15,12 @@ var root_url = "",
  ***************/
 var Conditions = Backbone.Model.extend({
     defaults: {
-        topic: 0,
+        topic: "eco",
         category: "States",
         option_1: "Pennsylvania",
         option_2: "Washington",
         url: "../data/",
-        data: "../data/state.json"
+        data: "../data/state_full.json"
     },
     constructor: function() {
         arguments.parse = true;
