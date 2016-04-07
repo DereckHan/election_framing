@@ -13,9 +13,10 @@ var BarSetView = Backbone.View.extend({
     }),
     events: {
         "change input[type=radio]": "getTopic",
-        "click li a": "getCategory",
+        "click #category": "getCategory",
         "click #option-1-menu": "getOption1",
-        "click #option-2-menu": "getOption2"
+        "click #option-2-menu": "getOption2",
+        "click li a": "getTime",
     },
     initialize: function() {
         //this.$el.html(this.template(this.model.attributes));
@@ -209,18 +210,19 @@ var BarSetView = Backbone.View.extend({
     },
     getTopic: function(event) {
         var selectTopic = $(event.currentTarget);
-        console.log(selectTopic[0].id);
+        console.log(selectTopic.parent()[0].id);
         /*var Topics = ["eco", "ter", "fed", "equ", "hea", "imm", "env", "gun"];
         var i = 0;
         for (i = 0; i < 8; i++) {
             if (Topics[i] == selectTopic[0].id) 
                 break;
         }*/
-        this.model.set({ "topic": selectTopic[0].id });
+        this.model.set({ "topic": selectTopic.parent()[0].id });
         console.log(this.model.get("topic"));
     },
     getCategory: function(event) {
         var selectCategory = $(event.currentTarget);
+        console.log(selectCategory);
         this.model.set({ "category": selectCategory[0].childNodes[0].data });
         this.model.set({ "data": this.model.get('url') + "state_full.json" });
         if (this.model.get("category") == "Parties") {
