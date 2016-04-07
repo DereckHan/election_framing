@@ -45,8 +45,7 @@ var BarSetView = Backbone.View.extend({
 
         var x = d3.scale.ordinal()
             .rangeRoundBands([0, width], .1);
-        var y = d3.scale.linear().domain([0, width + margin.left + margin.right]).range([height, 0]),
-            y1 = d3.scale.linear().domain([0, width + margin.left + margin.right]).range([height, 0]);
+        var y = d3.scale.linear().domain([0, width + margin.left + margin.right]).range([height, 0]);
         var xAxis = d3.svg.axis()
             .scale(x)
             .orient("bottom");
@@ -96,7 +95,6 @@ var BarSetView = Backbone.View.extend({
                 return d.keyword;
             }));
             y.domain([-1, 1]);
-            y1.domain([0, 1]);
 
             // x axis and y axis
             /*svg.append("g")
@@ -124,16 +122,21 @@ var BarSetView = Backbone.View.extend({
                 })
                 .attr("width", x.rangeBand() / 2)
                 .attr("y", function(d) {
-                    if (d[att["option_1"]] < 0) {
-                        return height / 2;
+                    if (d[att["option_1"]] > 0) {
+                        return y(d[att["option_2"]]);
                     } else
-                        return height / 2 - y(-d[att["option_1"]]) / 2;
+                        return height / 2;
+                    return y(Math.min(0, d[att["option_1"]]));
                 })
-                .attr("height", function(d, i, j) {
-                    if (d[att["option_1"]] < 0)
-                        return y(d[att["option_1"]]) / 2;
-                    else
-                        return y(-d[att["option_1"]]) / 2;
+                .attr("height", function(d) {
+                    if (d[att["option_1"]] > 0) {
+                        return (height / 2 - y(d[att["option_1"]]));
+                        //return -y(d[att["option_1"]]);
+                    }
+                    else {
+                        return (height / 2 - y(-d[att["option_1"]]));
+                        //return y(d[att["option_1"]]);
+                    }
                 });
             bars.append("rect")
                 .attr("class", "bar2")
@@ -142,16 +145,16 @@ var BarSetView = Backbone.View.extend({
                 })
                 .attr("width", x.rangeBand() / 2)
                 .attr("y", function(d) {
-                    if (d[att["option_2"]] < 0) {
-                        return height / 2;
+                    if (d[att["option_2"]] > 0) {
+                        return y(d[att["option_2"]]);
                     } else
-                        return height / 2 - y(-d[att["option_2"]]) / 2;
+                        return height / 2;
                 })
-                .attr("height", function(d, i, j) {
-                    if (d[att["option_2"]] < 0)
-                        return y(d[att["option_2"]]) / 2;
+                .attr("height", function(d) {
+                    if (d[att["option_2"]] > 0)
+                        return (height / 2 - y(d[att["option_2"]]));
                     else
-                        return y(-d[att["option_2"]]) / 2;
+                        return (height / 2 - y(-d[att["option_2"]]));
                 });
 
             // Draw legend
