@@ -25,6 +25,12 @@ var BarSetView = Backbone.View.extend({
     },*/
     template: _.template($("#barChartViewTemplate").html()),
     render: function(model) {
+        var term_count = 5;
+        var color = ["lightskyblue", "pink"];
+        var att = model.attributes;
+        console.log(att);
+        console.log(model.get("data"));
+
         var margin = {
                 top: 50,
                 right: 80,
@@ -33,15 +39,6 @@ var BarSetView = Backbone.View.extend({
             },
             width = 680 - margin.left - margin.right,
             height = 340 - margin.top - margin.bottom;
-        /*var aspect = 680 / 340,
-            chart = $("#bar-chart");
-
-        $(window).on("resize", function() {
-            var targetWidth = chart.parent().width();
-            //width = targetWidth;
-            //height = targetWidth / aspect;
-            //console.log(width);
-        });*/
 
         var x = d3.scale.ordinal()
             .rangeRoundBands([0, width], .1);
@@ -51,7 +48,21 @@ var BarSetView = Backbone.View.extend({
             .orient("bottom");
         // create left yAxis
         var yAxisLeft = d3.svg.axis().scale(y).ticks(4).orient("left");
-
+        // tip
+        var tip1 = d3.tip()
+            .attr('class', 'd3-tip')
+            .offset([-10, 0])
+            .html(function(d, i) {
+                console.log(i);
+                return "<strong>" + Object.keys(d)[1] + ": <br> </strong> <span style='color:" + color[0] + "'>" + d[Object.keys(d)[1]] + "</span>";
+            })
+        var tip2 = d3.tip()
+            .attr('class', 'd3-tip')
+            .offset([-10, 0])
+            .html(function(d, i) {
+                console.log(i);
+                return "<strong>" + Object.keys(d)[2] + ": <br> </strong> <span style='color:" + color[1] + "'>" + d[Object.keys(d)[2]] + "</span>";
+            })
 
         var svg = d3.select(".barchart-view")
             .attr("preserveAspectRatio", "xMinYMin meet")
@@ -61,12 +72,9 @@ var BarSetView = Backbone.View.extend({
             .attr("class", "graph")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
         //svg.selectAll(".bar").remove();
+        svg.call(tip1);
+        svg.call(tip2);
 
-        var term_count = 5;
-        var color = ["lightskyblue", "pink"];
-        var att = model.attributes;
-        console.log(att);
-        console.log(model.get("data"));
         d3.json(model.get("data"), function(data) {
             console.log(data);
             if (att["category"] == "Parties") {
@@ -75,8 +83,7 @@ var BarSetView = Backbone.View.extend({
             } else if (att["category"] == "Candidates") {
                 att["option_1"] = "Hillary Clinton";
                 att["option_2"] = "Ted Cruz";
-            }
-            else {
+            } else {
                 att["option_1"] = "Pennsylvania";
                 att["option_2"] = "Washington";
             }
@@ -132,12 +139,14 @@ var BarSetView = Backbone.View.extend({
                     if (d[att["option_1"]] > 0) {
                         return (height / 2 - y(d[att["option_1"]]));
                         //return -y(d[att["option_1"]]);
-                    }
-                    else {
+                    } else {
                         return (height / 2 - y(-d[att["option_1"]]));
                         //return y(d[att["option_1"]]);
                     }
-                });
+                })
+                .on('mouseover', tip1.show)
+                .on('mouseout', tip1.hide);
+
             bars.append("rect")
                 .attr("class", "bar2")
                 .attr("x", function(d) {
@@ -155,7 +164,9 @@ var BarSetView = Backbone.View.extend({
                         return (height / 2 - y(d[att["option_2"]]));
                     else
                         return (height / 2 - y(-d[att["option_2"]]));
-                });
+                })
+                .on('mouseover', tip2.show)
+                .on('mouseout', tip2.hide);
 
             // Draw legend
             var legendRectSize = 18,
