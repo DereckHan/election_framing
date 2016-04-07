@@ -209,7 +209,7 @@ var BarSetView = Backbone.View.extend({
     },
     getTopic: function(event) {
         var selectTopic = $(event.currentTarget);
-        //console.log(selectTopic[0].id);
+        console.log(selectTopic[0].id);
         /*var Topics = ["eco", "ter", "fed", "equ", "hea", "imm", "env", "gun"];
         var i = 0;
         for (i = 0; i < 8; i++) {

@@ -9,46 +9,48 @@
     <script id="lineChartViewTemplate" type="text/template">
         <div class="view_lineChart"></div>
     </script>
-    
     <script src="bin/script.entry.js"></script>
     <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+    <link rel="stylesheet" href="css/bootstrap-select.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script src="js/bootstrap-select.js"></script>
 </head>
 
 <body>
     <div class="container">
         <div class="row jumbotron" id="banner">
+            <input id="show" type='button' value="show" />
         </div>
         <div class="row panel panel-info" id="topic">
             <div class="panel-heading">
                 <h4 class="panel-title">Select a topic</h4>
             </div>
             <div class="panel-body">
-                <div class="btn-group" id="oyoo" role="group" data-toggle="buttons">
-                    <label class="btn btn-default active">
-                        <input class="topic" type="radio" name="options" id="eco" autocomplete="off" checked>Economy
+                <div id="topic" class="btn-group" role="group" data-toggle="buttons">
+                    <label id="eco" class="btn btn-default active">
+                        <input type="radio" name="options" autocomplete="off" checked> Economy
                     </label>
-                    <label class="btn btn-default">
-                        <input class="topic" type="radio" name="options" id="for" autocomplete="off">Foreign Policy
+                    <label id="for" class="btn btn-default">
+                        <input type="radio" name="options" autocomplete="off"> Foreign Policy
                     </label>
-                    <label class="btn btn-default">
-                        <input class="topic" type="radio" name="options" id="fed" autocomplete="off">Federal Budget
+                    <label id="fed" class="btn btn-default">
+                        <input type="radio" name="options" autocomplete="off"> Federal Budget
                     </label>
-                    <label class="btn btn-default">
-                        <input class="topic" type="radio" name="options" id="equ" autocomplete="off">Equality
+                    <label id="equ" class="btn btn-default">
+                        <input type="radio" name="options" autocomplete="off" checked> Equality
                     </label>
-                    <label class="btn btn-default">
-                        <input class="topic" type="radio" name="options" id="hea" autocomplete="off">Health Care
+                    <label id="hea" class="btn btn-default">
+                        <input type="radio" name="options" autocomplete="off"> Health Care
                     </label>
-                    <label class="btn btn-default">
-                        <input class="topic" type="radio" name="options" id="imm" autocomplete="off">Immigration
+                    <label id="imm" class="btn btn-default">
+                        <input type="radio" name="options" autocomplete="off"> Immigration
                     </label>
-                    <label class="btn btn-default">
-                        <input class="topic" type="radio" name="options" id="env" autocomplete="off">Environment
+                    <label id="env" class="btn btn-default">
+                        <input type="radio" name="options" autocomplete="off" checked> Environment
                     </label>
-                    <label class="btn btn-default">
-                        <input class="topic" type="radio" name="options" id="gun" autocomplete="off">Guns
+                    <label id="gun" class="btn btn-default">
+                        <input type="radio" name="options" autocomplete="off"> Guns
                     </label>
                 </div>
             </div>
@@ -59,34 +61,22 @@
             </div>
             <div class="row panel-body">
                 <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12" id="category">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" id="category-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">States
-                            <span class="caret"></span></button>
-                        <ul class="dropdown-menu" id="category-dropdown">
-                            <li><a href="#">States</a></li>
-                            <li><a href="#">Parties</a></li>
-                            <li><a href="#">Candidates</a></li>
-                        </ul>
-                    </div>
+                    <select class="selectpicker show-tick">
+                        <option>States</option>
+                        <option>Parties</option>
+                        <option>Candidates</option>
+                    </select>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-5 col-xs-5" id="option-1">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-primary dropdown-toggle" id="option-1-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pennsylvania
-                            <span class="caret"></span></button>
-                        <ul class="dropdown-menu" id="option-1-dropdown">
-                        </ul>
-                    </div>
+                    <select class="selectpicker show-tick" data-live-search="true">
+                    </select>
                 </div>
                 <div class="col-lg-1 col-md-1 col-sm-2 col-xs-2">
-                    <span class="label label-danger" id="vs">vs.</span>
+                    <span class="label label-danger" id="vs">vs</span>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-5 col-xs-5" id="option-2">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-info dropdown-toggle" id="option-2-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Washington
-                            <span class="caret"></span></button>
-                        <ul class="dropdown-menu" id="option-2-dropdown">
-                        </ul>
-                    </div>
+                    <select class="selectpicker show-tick" data-live-search="true">
+                    </select>
                 </div>
             </div>
         </div>
@@ -164,4 +154,5 @@
             <div class="panel-footer">Interactive System Design.</div>
         </div>
     </div>
+    <script src="js/show.js"></script>
 </body>

@@ -1,3 +1,4 @@
+
 var category;
 Condition = Backbone.Model.extend({
 	defaults : {
