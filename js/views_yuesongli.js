@@ -13,7 +13,7 @@ var BarSetView = Backbone.View.extend({
     }),
     events: {
         "change input[type=radio]": "getTopic",
-        "click #category": "getCategory",
+        "change #select-category": "getCategory",
         "click #option-1-menu": "getOption1",
         "click #option-2-menu": "getOption2",
         "click li a": "getTime",
@@ -131,7 +131,7 @@ var BarSetView = Backbone.View.extend({
                 .attr("width", x.rangeBand() / 2)
                 .attr("y", function(d) {
                     if (d[att["option_1"]] > 0) {
-                        return y(d[att["option_2"]]);
+                        return y(d[att["option_1"]]);
                     } else
                         return height / 2;
                     return y(Math.min(0, d[att["option_1"]]));
@@ -221,9 +221,9 @@ var BarSetView = Backbone.View.extend({
         console.log(this.model.get("topic"));
     },
     getCategory: function(event) {
-        var selectCategory = $(event.currentTarget);
+        var selectCategory = event.target.value;
         console.log(selectCategory);
-        this.model.set({ "category": selectCategory[0].childNodes[0].data });
+        this.model.set({ "category": selectCategory });
         this.model.set({ "data": this.model.get('url') + "state_full.json" });
         if (this.model.get("category") == "Parties") {
             this.model.set({ "data": this.model.get('url') + "party_full.json" });
