@@ -5,10 +5,10 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 Backbone.$ = $;
-var root_url = "",
-    state_file_path = "../data/state_full.json",
-    party_file_path = "",
-    candidate_file_path = "";
+var root_url = "../",
+    state_file_path = "data/state_full.json",
+    party_file_path = "data/party_full.json",
+    candidate_file_path = "data/candidate_full.json";
 
 /*************** 
  * Models 
@@ -19,13 +19,10 @@ var Conditions = Backbone.Model.extend({
         category: "States",
         option_1: "Pennsylvania",
         option_2: "Washington",
+        time_range: "day",
         url: "../data/",
         data: "../data/state_full.json"
     },
-    constructor: function() {
-        arguments.parse = true;
-        Backbone.Model.apply(this, arguments);
-    }
 });
 
 var Line = Backbone.Model.extend({
