@@ -127,6 +127,8 @@ $(document).ready(function() {
         conditions.set("option_2", data[1]);
         $("div#option-1 select").selectpicker('refresh');
         $("div#option-2 select").selectpicker('refresh');
+        $('#option-1 button').attr("class", "btn dropdown-toggle btn-primary");
+        $('#option-2 button').attr("class", "btn dropdown-toggle btn-info");
     }
 
 });

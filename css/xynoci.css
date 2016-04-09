@@ -25,17 +25,32 @@
     color: inherit;
     font-size: 18px;
 }
+
 #option-1 {
     padding-right: 0px;
 }
+
 #option-2 {
     padding-left: 0px;
 }
+
 #vs {
     text-align: center;
     display:block;
     line-height: 27px;
     font-size: 14px;
+}
+
+#option-1 button,
+#option-2 button {
+    
+}
+
+.dropdown-menu>.active>a, 
+.dropdown-menu>.active>a:focus, 
+.dropdown-menu>.active>a:hover {
+    color: #333 !important; 
+    background-color: #fff !important;
 }
 /*
  * content
