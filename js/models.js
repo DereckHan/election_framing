@@ -52,24 +52,29 @@ var Categories = Backbone.Model.extend({
 });
 
 var Keywords = Backbone.Model.extend({
-   constructor: function(conditions, data) {
+    constructor: function(conditions, data) {
         var topic = conditions.get("topic"),
             category = conditions.get("category"),
             option = conditions.get("option_" + "1"),
             time_range = conditions.get("time_range");
-            console.log(data[category].attributes);
-            var data_obj = data[category];
-            console.log(data_obj.attributes);
+        var data_obj = data[category];
+        var self = this;
+        data_obj.fetch({
+            success: function() {
+                data_obj = data_obj.attributes;
+                keyset = data_obj[option][topic][time_range];
+                // var keyset = Object.keys(data[category].attributes[option][topic][time_range]["term_set"]);
+                self.attributes = keyset; 
+            }
+        })
 
-        // var keyset = Object.keys(data[category].attributes[option][topic][time_range]["term_set"]);
-        // this.set("keys", keyset);
+
     }
 });
 
 var State = Backbone.Model.extend({
     url: root_url + state_file_path,
-    initialize: function() {
-    }
+    initialize: function() {}
 });
 
 var Candidate = Backbone.Model.extend({
