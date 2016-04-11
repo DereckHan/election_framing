@@ -4,8 +4,8 @@
 var view_t = require('./views.js');
 var model_t = require('./models.js');
 var View = require('./views_yuesongli.js');
-/*************** temporary ***************/
 
+/*************** Js ***************/
 var $ = require("jquery");
 window.$ = window.jQuery = $;
 var d3 = require('d3');
@@ -13,6 +13,7 @@ require('../css/style.css');
 require('../css/xynoci.css');
 require('../css/barchart_style.css');
 
+/*************** resources ***************/
 var states_base = ["Alabama", "Alaska", "Arizona", "Arkansas", "California",
         "Colorado", "Connecticut", "Delaware", "District of Columbia",
         "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "lowa",
@@ -35,18 +36,16 @@ var states_base = ["Alabama", "Alaska", "Arizona", "Arkansas", "California",
     parties_base = ["Democratic", "Republican"];
 
 $(document).ready(function() {
-    /*************** test functions ***************/
-    $("#show").click(
-        function() {
-            alert("topic: " + conditions.get("topic") + "\ncategory: " + conditions.get("category") + " \noption-1 :" + conditions.get("option_1") + " \noption_2 :" + conditions.get("option_2"));
-        }
-    );
-
     /*************** main content ***************/
     var state = new model_t.State(),
         party = new model_t.Party(),
         candidate = new model_t.Candidate(),
-        conditions = new model_t.Conditions();
+        conditions = new model_t.Conditions(),
+        data = {
+            "States": state,
+            "Candidates": candidate,
+            "Parties": party
+        };
 
     var bar = new View.BarSetView({
         model: conditions
@@ -55,20 +54,7 @@ $(document).ready(function() {
     bar.listenTo(conditions, "change", bar.render);
 
 
-    var state_data = state.fetch({
-        success: function(model, response, options) {
-            attributes = model.attributes;
-            console.log(attributes["time"]);
-            console.log(attributes["Alabama"]);
-            console.log(attributes["Alabama"]["eco"]);
-            console.log(attributes["Alabama"]["eco"]["day"]);
-            console.log(attributes["Alabama"]["eco"]["day"]["begin_time"]);
-            var terms = attributes["Alabama"]["eco"]["day"]["term_set"];
-            console.log(terms);
-            var key_set = Object.keys(terms);
-            console.log(key_set);
-        }
-    });
+    var keys = new model_t.Keywords(conditions, data);
 
     /*************** single element change ***************/
     $("div#category select").change(function() {
@@ -131,4 +117,25 @@ $(document).ready(function() {
         $('#option-2 button').attr("class", "btn dropdown-toggle btn-info");
     }
 
+    /*************** test functions ***************/
+    $("#show").click(
+        function() {
+            alert("topic: " + conditions.get("topic") + "\ncategory: " + conditions.get("category") + " \noption-1 :" + conditions.get("option_1") + " \noption_2 :" + conditions.get("option_2"));
+        }
+    );
+
+    var state_data = state.fetch({
+        success: function(model, response, options) {
+            attributes = model.attributes;
+            // console.log(attributes["time"]);
+            // console.log(attributes["Alabama"]);
+            // console.log(attributes["Alabama"]["eco"]);
+            // console.log(attributes["Alabama"]["eco"]["day"]);
+            // console.log(attributes["Alabama"]["eco"]["day"]["begin_time"]);
+            // var terms = attributes["Alabama"]["eco"]["day"]["term_set"];
+            // console.log(terms);
+            // var key_set = Object.keys(terms);
+            // console.log(key_set);
+        }
+    });
 });
