@@ -28,7 +28,7 @@ var BarSetView = Backbone.View.extend({
     render: function(model) {
         var term_count = 5;
         var color = ["lightskyblue", "pink"];
-        var att = model.attributes;
+        //var att = model.attributes;
         // x console.log(att);
         // x console.log(model.get("data"));
 
@@ -217,18 +217,28 @@ var BarSetView = Backbone.View.extend({
             if (Topics[i] == selectTopic[0].id) 
                 break;
         }*/
-        this.model.set({ "topic": selectTopic.parent()[0].id });
+        this.model.set({
+            "topic": selectTopic.parent()[0].id
+        });
         // x console.log(this.model.get("topic"));
     },
     getCategory: function(event) {
         var selectCategory = event.target.value;
         // x console.log(selectCategory);
-        this.model.set({ "category": selectCategory });
-        this.model.set({ "data": this.model.get('url') + "state_full.json" });
+        this.model.set({
+            "category": selectCategory
+        });
+        this.model.set({
+            "data": this.model.get('url') + "state_full.json"
+        });
         if (this.model.get("category") == "Parties") {
-            this.model.set({ "data": this.model.get('url') + "party_full.json" });
+            this.model.set({
+                "data": this.model.get('url') + "party_full.json"
+            });
         } else if (this.model.get("category") == "Candidates") {
-            this.model.set({ "data": this.model.get('url') + "candidate_full.json" });
+            this.model.set({
+                "data": this.model.get('url') + "candidate_full.json"
+            });
         }
     },
     clear: function() {

@@ -56,33 +56,28 @@ var Categories = Backbone.Model.extend({
 
 var Keywords = Backbone.Model.extend({
     constructor: function(conditions, data) {
+        this.loadNewKeys(conditions, data);
+    },
+    loadNewKeys: function(conditions, data) {
         var topic = conditions.get("topic"),
             category = conditions.get("category"),
             option = conditions.get("option_" + "1"),
             time_range = conditions.get("time_range");
         this.attributes = data[category].attributes[option][topic][time_range];
+        console.log(this.attributes);
     }
 });
 
 var State = Backbone.Model.extend({
-    url: root_url + state_file_path,
-    initialize: function() {
-
-    }
+    url: root_url + state_file_path
 });
 
 var Candidate = Backbone.Model.extend({
-    url: root_url + candidate_file_path,
-    initialize: function() {
-
-    }
+    url: root_url + candidate_file_path
 });
 
 var Party = Backbone.Model.extend({
-    url: root_url + party_file_path,
-    initialize: function() {
-
-    }
+    url: root_url + party_file_path
 });
 
 
