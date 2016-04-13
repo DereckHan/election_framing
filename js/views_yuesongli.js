@@ -12,7 +12,7 @@ var BarSetView = Backbone.View.extend({
         $("#bar-chart")
     }),
     events: {
-        "change input[type=radio]": "getTopic",
+        "click input[type=radio]": "getTopic",
         "change #select-category": "getCategory",
         "click #option-1-menu": "getOption1",
         "click #option-2-menu": "getOption2",
@@ -21,9 +21,10 @@ var BarSetView = Backbone.View.extend({
     initialize: function() {
         //this.$el.html(this.template(this.model.attributes));
     },
-    constructor: function(conditions, data) {
-        conditions.set("data", data);
-        this.model = conditions;
+    /*constructor: function(data) {
+        console.log(this.model);
+        model.set("data", data);
+        //this.model = conditions;
         //console.log(data);
     },
     /*show: function(model) {
@@ -31,14 +32,10 @@ var BarSetView = Backbone.View.extend({
     },*/
     template: _.template($("#barChartViewTemplate").html()),
     render: function(model) {
-        console.log(model);
         var term_count = 5;
         var color = ["lightskyblue", "pink"];
         var att = model.attributes;
-        var object = att["data"][att["category"]];
-        console.log(object.attributes);
-        // x console.log(att);
-        // x console.log(model.get("data"));
+        console.log(att);
 
         var margin = {
                 top: 50,
@@ -96,8 +93,8 @@ var BarSetView = Backbone.View.extend({
         //     att["option_1"] = "Pennsylvania";
         //     att["option_2"] = "Washington";
         // }
-        var data = object.attributes;
-        console.log(att);
+        var data = (att["data"][att["category"]]).attributes;
+        console.log(data);
         var comparisons = [att["option_1"], att["option_2"]];
         //Process data
         var Data = [{}, {}, {}, {}, {}];
@@ -220,7 +217,7 @@ var BarSetView = Backbone.View.extend({
     },
     getTopic: function(event) {
         var selectTopic = $(event.currentTarget);
-        console.log(selectTopic);
+        // x console.log(selectTopic);
         // x console.log(selectTopic.parent()[0].id);
         /*var Topics = ["eco", "ter", "fed", "equ", "hea", "imm", "env", "gun"];
         var i = 0;
@@ -233,14 +230,22 @@ var BarSetView = Backbone.View.extend({
     },
     getCategory: function(event) {
         var selectCategory = event.target.value;
-        console.log(selectCategory);
+        console.log(event.target);
+        /*var op1 = $("#option-1");
+        console.log(op1);
+        if (selectCategory == "Parties") {
+            //this.model.set({ "data": this.model.get('url') + "party_full.json" });
+            this.model.set({"option_1": "Democratic", "option_2": "Republican"});
+        } else if (selectCategory == "Candidates") {
+            //this.model.set({ "data": this.model.get('url') + "candidate_full.json" });
+            
+            this.model.set({"option_1": "Democratic", "option_2": "Republican"});
+        }*/
+
         this.model.set({ "category": selectCategory });
-        this.model.set({ "data": this.model.get('url') + "state_full.json" });
-        if (this.model.get("category") == "Parties") {
-            this.model.set({ "data": this.model.get('url') + "party_full.json" });
-        } else if (this.model.get("category") == "Candidates") {
-            this.model.set({ "data": this.model.get('url') + "candidate_full.json" });
-        }
+        console.log(this.model.get("category"));
+
+        //this.model.set({ "data": this.model.get('url') + "state_full.json" });
     },
     clear: function() {
         this.model.destroy();
