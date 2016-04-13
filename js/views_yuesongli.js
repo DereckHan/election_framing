@@ -21,14 +21,22 @@ var BarSetView = Backbone.View.extend({
     initialize: function() {
         //this.$el.html(this.template(this.model.attributes));
     },
+    constructor: function(conditions, data) {
+        conditions.set("data", data);
+        this.model = conditions;
+        //console.log(data);
+    },
     /*show: function(model) {
       alert(model.get("data"));
     },*/
     template: _.template($("#barChartViewTemplate").html()),
     render: function(model) {
+        console.log(model);
         var term_count = 5;
         var color = ["lightskyblue", "pink"];
         var att = model.attributes;
+        var object = att["data"][att["category"]];
+        console.log(object.attributes);
         // x console.log(att);
         // x console.log(model.get("data"));
 
@@ -76,133 +84,135 @@ var BarSetView = Backbone.View.extend({
         svg.call(tip1);
         svg.call(tip2);
 
-        d3.json(model.get("data"), function(data) {
-            // x console.log(data);
-            // if (att["category"] == "Parties") {
-            //     att["option_1"] = "Democrat";
-            //     att["option_2"] = "Republican";
-            // } else if (att["category"] == "Candidates") {
-            //     att["option_1"] = "Hillary Clinton";
-            //     att["option_2"] = "Ted Cruz";
-            // } else {
-            //     att["option_1"] = "Pennsylvania";
-            //     att["option_2"] = "Washington";
-            // }
-            var comparisons = [att["option_1"], att["option_2"]];
-            //Process data
-            var Data = [{}, {}, {}, {}, {}];
-            for (i = 0; i < term_count; i++) {
-                Data[i]["keyword"] = Object.keys(data[att["option_1"]][att["topic"]]["day"].term_set)[i];
-                Data[i][att["option_1"]] = data[att["option_1"]][att["topic"]]["day"].term_set[Data[i]["keyword"]][29];
-                Data[i][att["option_2"]] = data[att["option_2"]][att["topic"]]["day"].term_set[Data[i]["keyword"]][29];
-            }
-            // x console.log(Data);
+        //d3.json(model.get("data"), function(data) {
+        // x console.log(data);
+        // if (att["category"] == "Parties") {
+        //     att["option_1"] = "Democrat";
+        //     att["option_2"] = "Republican";
+        // } else if (att["category"] == "Candidates") {
+        //     att["option_1"] = "Hillary Clinton";
+        //     att["option_2"] = "Ted Cruz";
+        // } else {
+        //     att["option_1"] = "Pennsylvania";
+        //     att["option_2"] = "Washington";
+        // }
+        var data = object.attributes;
+        console.log(att);
+        var comparisons = [att["option_1"], att["option_2"]];
+        //Process data
+        var Data = [{}, {}, {}, {}, {}];
+        for (i = 0; i < term_count; i++) {
+            Data[i]["keyword"] = Object.keys(data[att["option_1"]][att["topic"]]["day"].term_set)[i];
+            Data[i][att["option_1"]] = data[att["option_1"]][att["topic"]]["day"].term_set[Data[i]["keyword"]][29];
+            Data[i][att["option_2"]] = data[att["option_2"]][att["topic"]]["day"].term_set[Data[i]["keyword"]][29];
+        }
+        console.log(Data);
 
-            // svg domain
-            x.domain(Data.map(function(d) {
-                return d.keyword;
-            }));
-            y.domain([-1, 1]);
+        // svg domain
+        x.domain(Data.map(function(d) {
+            return d.keyword;
+        }));
+        y.domain([-1, 1]);
 
-            // x axis and y axis
-            /*svg.append("g")
-                .attr("class", "x axis")
-                .attr("transform", "translate(0," + height + ")")
-                .call(xAxis);*/
-            svg.append("g")
-                .attr("class", "y axis axisLeft")
-                .attr("transform", "translate(0,0)")
-                .call(yAxisLeft)
-                .append("text")
-                .attr("y", 6)
-                .attr("dy", "-2em")
-                .attr("dx", "6em")
-                .style("text-anchor", "end")
-                .text("Sentimental Score");
+        // x axis and y axis
+        /*svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xAxis);*/
+        svg.append("g")
+            .attr("class", "y axis axisLeft")
+            .attr("transform", "translate(0,0)")
+            .call(yAxisLeft)
+            .append("text")
+            .attr("y", 6)
+            .attr("dy", "-2em")
+            .attr("dx", "6em")
+            .style("text-anchor", "end")
+            .text("Sentimental Score");
 
-            // bars
+        // bars
 
-            bars = svg.selectAll(".bar").data(Data).enter();
-            bars.append("rect")
-                .attr("class", "bar1")
-                .attr("x", function(d) {
-                    return x(d.keyword);
-                })
-                .attr("width", x.rangeBand() / 2)
-                .attr("y", function(d) {
-                    if (d[att["option_1"]] > 0) {
-                        return y(d[att["option_1"]]);
-                    } else
-                        return height / 2;
-                    return y(Math.min(0, d[att["option_1"]]));
-                })
-                .attr("height", function(d) {
-                    if (d[att["option_1"]] > 0) {
-                        return (height / 2 - y(d[att["option_1"]]));
-                        //return -y(d[att["option_1"]]);
-                    } else {
-                        return (height / 2 - y(-d[att["option_1"]]));
-                        //return y(d[att["option_1"]]);
-                    }
-                })
-                .on('mouseover', tip1.show)
-                .on('mouseout', tip1.hide);
+        bars = svg.selectAll(".bar").data(Data).enter();
+        bars.append("rect")
+            .attr("class", "bar1")
+            .attr("x", function(d) {
+                return x(d.keyword);
+            })
+            .attr("width", x.rangeBand() / 2)
+            .attr("y", function(d) {
+                if (d[att["option_1"]] > 0) {
+                    return y(d[att["option_1"]]);
+                } else
+                    return height / 2;
+                return y(Math.min(0, d[att["option_1"]]));
+            })
+            .attr("height", function(d) {
+                if (d[att["option_1"]] > 0) {
+                    return (height / 2 - y(d[att["option_1"]]));
+                    //return -y(d[att["option_1"]]);
+                } else {
+                    return (height / 2 - y(-d[att["option_1"]]));
+                    //return y(d[att["option_1"]]);
+                }
+            })
+            .on('mouseover', tip1.show)
+            .on('mouseout', tip1.hide);
 
-            bars.append("rect")
-                .attr("class", "bar2")
-                .attr("x", function(d) {
-                    return x(d.keyword) + x.rangeBand() / 2;
-                })
-                .attr("width", x.rangeBand() / 2)
-                .attr("y", function(d) {
-                    if (d[att["option_2"]] > 0) {
-                        return y(d[att["option_2"]]);
-                    } else
-                        return height / 2;
-                })
-                .attr("height", function(d) {
-                    if (d[att["option_2"]] > 0)
-                        return (height / 2 - y(d[att["option_2"]]));
-                    else
-                        return (height / 2 - y(-d[att["option_2"]]));
-                })
-                .on('mouseover', tip2.show)
-                .on('mouseout', tip2.hide);
+        bars.append("rect")
+            .attr("class", "bar2")
+            .attr("x", function(d) {
+                return x(d.keyword) + x.rangeBand() / 2;
+            })
+            .attr("width", x.rangeBand() / 2)
+            .attr("y", function(d) {
+                if (d[att["option_2"]] > 0) {
+                    return y(d[att["option_2"]]);
+                } else
+                    return height / 2;
+            })
+            .attr("height", function(d) {
+                if (d[att["option_2"]] > 0)
+                    return (height / 2 - y(d[att["option_2"]]));
+                else
+                    return (height / 2 - y(-d[att["option_2"]]));
+            })
+            .on('mouseover', tip2.show)
+            .on('mouseout', tip2.hide);
 
-            // Draw legend
-            var legendRectSize = 18,
-                legendWordSize = 40,
-                legendSpacing = 4;
+        // Draw legend
+        var legendRectSize = 18,
+            legendWordSize = 40,
+            legendSpacing = 4;
 
-            var legend = bars.append("g")
-                .attr("class", "legend")
-                .data(comparisons)
-                .attr('transform', function(d, i) {
-                    var legend_height = legendRectSize + legendSpacing;
-                    var legend_width = (legendRectSize + legendWordSize) * 2;
-                    var horz = width + (i - 2) * (legend_width + legendSpacing * 2);
-                    //var vert = i * height - offset;
-                    return 'translate(' + horz + ',' + -(legendRectSize * 2) + ')';
-                });
+        var legend = bars.append("g")
+            .attr("class", "legend")
+            .data(comparisons)
+            .attr('transform', function(d, i) {
+                var legend_height = legendRectSize + legendSpacing;
+                var legend_width = (legendRectSize + legendWordSize) * 2;
+                var horz = width + (i - 2) * (legend_width + legendSpacing * 2);
+                //var vert = i * height - offset;
+                return 'translate(' + horz + ',' + -(legendRectSize * 2) + ')';
+            });
 
-            legend.append('rect')
-                .attr('width', legendRectSize)
-                .attr('height', legendRectSize)
-                .style('fill', function(d, i) {
-                    return color[i % 2];
-                })
-                .style('stroke', function(d, i) {
-                    return color[i % 2];
-                });
+        legend.append('rect')
+            .attr('width', legendRectSize)
+            .attr('height', legendRectSize)
+            .style('fill', function(d, i) {
+                return color[i % 2];
+            })
+            .style('stroke', function(d, i) {
+                return color[i % 2];
+            });
 
-            legend.append('text')
-                .attr('class', 'legend')
-                .attr('x', legendRectSize + legendSpacing)
-                .attr('y', legendRectSize - legendSpacing)
-                .text(function(d, i) {
-                    return comparisons[i % 2];
-                });
-        });
+        legend.append('text')
+            .attr('class', 'legend')
+            .attr('x', legendRectSize + legendSpacing)
+            .attr('y', legendRectSize - legendSpacing)
+            .text(function(d, i) {
+                return comparisons[i % 2];
+            });
+        //});
         //svg.selectAll(".legend").remove();
         //svg.selectAll(".bar").remove();
         //d3.select("svg").remove();
@@ -210,6 +220,7 @@ var BarSetView = Backbone.View.extend({
     },
     getTopic: function(event) {
         var selectTopic = $(event.currentTarget);
+        console.log(selectTopic);
         // x console.log(selectTopic.parent()[0].id);
         /*var Topics = ["eco", "ter", "fed", "equ", "hea", "imm", "env", "gun"];
         var i = 0;
@@ -222,7 +233,7 @@ var BarSetView = Backbone.View.extend({
     },
     getCategory: function(event) {
         var selectCategory = event.target.value;
-        // x console.log(selectCategory);
+        console.log(selectCategory);
         this.model.set({ "category": selectCategory });
         this.model.set({ "data": this.model.get('url') + "state_full.json" });
         if (this.model.get("category") == "Parties") {

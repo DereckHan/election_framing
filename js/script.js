@@ -52,7 +52,7 @@ $(document).ready(function() {
     };
     var bar = new View.BarSetView(data);
     bar.listenTo(conditions, "change", bar.render); 
-
+    
     var keys = new model_t.Keywords(conditions, data);
     console.log(keys);
 
