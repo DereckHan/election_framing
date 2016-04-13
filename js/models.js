@@ -44,7 +44,6 @@ var Line = Backbone.Model.extend({
         // call when conditions changed
         // reload parameters from server.
     },
-
     constructor: function() {
         arguments.parse = true;
         Backbone.Model.apply(this, arguments);
@@ -53,8 +52,6 @@ var Line = Backbone.Model.extend({
 
 var Categories = Backbone.Model.extend({
     initialize: function() {
-        $.getJSON();
-
     }
 });
 
@@ -74,24 +71,26 @@ var Keywords = Backbone.Model.extend({
                 self.attributes = keyset;
             }
         })
-
-
     }
 });
 
 var State = Backbone.Model.extend({
     url: root_url + state_file_path,
-    initialize: function() {}
+    initialize: function() {
+        this.fetch();
+    }
 });
 
 var Candidate = Backbone.Model.extend({
     url: root_url + candidate_file_path,
-    initialize: function() {}
+    initialize: function() {
+        this.fetch();}
 });
 
 var Party = Backbone.Model.extend({
     url: root_url + party_file_path,
-    initialize: function() {}
+    initialize: function() {
+        this.fetch();}
 });
 
 

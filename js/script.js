@@ -35,28 +35,23 @@ var states_base = ["Alabama", "Alaska", "Arizona", "Arkansas", "California",
     ],
     parties_base = ["Democratic", "Republican"];
 
-var state = new model_t.State(),
-    party = new model_t.Party(),
-    candidate = new model_t.Candidate();
+var state = new model_t.State();
+var party = new model_t.Party();
+var candidate = new model_t.Candidate();
 
 $(document).ready(function() {
     /*************** load DOMs ***************/
     addOption(states_base);
-    conditions = new model_t.Conditions();
 
     /*************** main content ***************/
+    var conditions = new model_t.Conditions();
     var data = {
         "States": state,
         "Candidates": candidate,
         "Parties": party
     };
-
-    var bar = new View.BarSetView({
-        model: conditions
-    });
-    bar.listenTo(conditions, "change", bar.clear);
-    bar.listenTo(conditions, "change", bar.render);
-
+    var bar = new View.BarSetView(data);
+    bar.listenTo(conditions, "change", bar.render); 
 
     var keys = new model_t.Keywords(conditions, data);
     console.log(keys);
@@ -116,22 +111,8 @@ $(document).ready(function() {
     /*************** test functions ***************/
     conditions.on("change", function() {
         console.log(conditions.attributes);
-    })
-
-    var state_data = state.fetch({
-        success: function(model, response, options) {
-            attributes = model.attributes;
-            // console.log(attributes["time"]);
-            // console.log(attributes["Alabama"]);
-            // console.log(attributes["Alabama"]["eco"]);
-            // console.log(attributes["Alabama"]["eco"]["day"]);
-            // console.log(attributes["Alabama"]["eco"]["day"]["begin_time"]);
-            // var terms = attributes["Alabama"]["eco"]["day"]["term_set"];
-            // console.log(terms);
-            // var key_set = Object.keys(terms);
-            // console.log(key_set);
-        }
     });
+
 });
 
 function addOption(data) {
