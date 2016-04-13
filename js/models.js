@@ -23,12 +23,35 @@ var Conditions = Backbone.Model.extend({
         url: "../data/",
         data: "../data/state_full.json"
     },
-    initialize: function() {
+    initialize: function(data) {
+        //console.log(data);
         this.set("option_1", $("div#option-1 select").val());
         this.set("option_2", $("div#option-2 select").val());
         this.set("topic", $("div#topic label").attr("id"));
         this.set("category", $("div#category select").val());
         this.set("time_range", $(".nav.nav-tabs.nav-justified li.active a").html().toLowerCase());
+    }
+});
+
+var Con = Backbone.Model.extend({
+    defaults: {
+        topic: "eco",
+        category: "States",
+        option_1: "Alabama",
+        option_2: "Alaska",
+        time_range: "day",
+        //url: "../data/",
+        //data: "../data/state_full.json"
+        data: Object()
+    },
+    initialize: function(data) {
+        //console.log(data);
+        this.set("option_1", $("div#option-1 select").val());
+        this.set("option_2", $("div#option-2 select").val());
+        this.set("topic", $("div#topic label").attr("id"));
+        this.set("category", $("div#category select").val());
+        this.set("time_range", $(".nav.nav-tabs.nav-justified li.active a").html().toLowerCase());
+        this.set("data", data);
     }
 });
 
@@ -94,6 +117,7 @@ var LineSet = Backbone.Collection.extend({
  ***************/
 module.exports = {
     Conditions: Conditions,
+    Con: Con,
     Line: Line,
     Categories: Categories,
     Keywords: Keywords,

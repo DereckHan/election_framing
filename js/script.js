@@ -3,7 +3,7 @@
 // model_t -> Model
 var view_t = require('./views.js');
 var model_t = require('./models.js');
-// var View = require('./views_yuesongli.js');
+var View = require('./views_yuesongli.js');
 
 /*************** Js ***************/
 var $ = require("jquery");
@@ -69,8 +69,12 @@ $(document).ready(function() {
             "Parties": party
         };
 
-        // var bar = new View.BarSetView(data);
-        // bar.listenTo(conditions, "change", bar.render);
+        var con = new model_t.Con(data);
+        var bar = new View.BarSetView({
+            model: con
+        });
+        bar.listenTo(con, "change", bar.render);
+
         var keys = new model_t.Keywords(conditions, data);
         var line = new view_t.LineSetView(conditions, data);
 
@@ -143,19 +147,20 @@ $(document).ready(function() {
         }
     });
 
-    function addOption(base) {
-        for (var i = 0; i < base.length; i++) {
-            $("div#option-1 select").append("<option value='" + base[i] + "'>" + base[i] + "</option>");
-            $("div#option-2 select").append("<option value='" + base[i] + "'>" + base[i] + "</option>");
-        };
-        $("div#option-1 select").val(base[0]);
-        $("div#option-2 option[value='" + base[0] + "']").prop('disabled', true);
-        $("div#option-2 select").val(base[1]);
-        $("div#option-1 option[value='" + base[1] + "']").prop('disabled', true);
-        $("div#option-1 select").selectpicker('refresh');
-        $("div#option-2 select").selectpicker('refresh');
-        $('#option-1 button').attr("class", "btn dropdown-toggle btn-primary");
-        $('#option-2 button').attr("class", "btn dropdown-toggle btn-info");
-    }
-
 });
+
+function addOption(data) {
+    for (var i = 0; i < data.length; i++) {
+        $("div#option-1 select").append("<option value='" + data[i] + "'>" + data[i] + "</option>");
+        $("div#option-2 select").append("<option value='" + data[i] + "'>" + data[i] + "</option>");
+    };
+    $("div#option-1 select").val(data[0]);
+    $("div#option-2 option[value='" + data[0] + "']").prop('disabled', true);
+    $("div#option-2 select").val(data[1]);
+    $("div#option-1 option[value='" + data[1] + "']").prop('disabled', true);
+    $("div#option-1 select").selectpicker('refresh');
+    $("div#option-2 select").selectpicker('refresh');
+    $('#option-1 button').attr("class", "btn dropdown-toggle btn-primary");
+    $('#option-2 button').attr("class", "btn dropdown-toggle btn-info");
+}
+
