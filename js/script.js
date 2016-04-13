@@ -45,16 +45,36 @@ $(document).ready(function() {
 
     /*************** main content ***************/
     var conditions = new model_t.Conditions();
-    var data = {
-        "States": state,
-        "Candidates": candidate,
-        "Parties": party
-    };
-    var bar = new View.BarSetView(data);
-    bar.listenTo(conditions, "change", bar.render); 
 
-    var keys = new model_t.Keywords(conditions, data);
-    console.log(keys);
+    var stateRequest = $.get(state.url);
+    var partyRequest = $.get(party.url);
+    var candidateRequest = $.get(candidate.url);
+    stateRequest.done(function(data) {
+        stateJSON = data;
+    });
+    partyRequest.done(function(data) {
+        partyJSON = data;
+    });
+    candidateRequest.done(function(data) {
+        candidateJSON = data;
+    });
+    $.when(stateRequest, partyRequest, candidateRequest).done(function() {
+        state.attributes = stateJSON;
+        party.attributes = partyJSON;
+        candidate.attributes = candidateJSON;
+
+        var data = {
+            "States": state,
+            "Candidates": candidate,
+            "Parties": party
+        };
+        
+        var keys = new model_t.Keywords(conditions, data);
+        var bar = new View.BarSetView(data);
+        bar.listenTo(conditions, "change", bar.render);
+
+
+    });
 
     /*************** single element change ***************/
     $("div#category select").change(function() {
