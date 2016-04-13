@@ -73,6 +73,7 @@ $(document).ready(function() {
         var bar = new View.BarSetView({
             model: con
         });
+        bar.listenTo(con, "change", bar.clear);
         bar.listenTo(con, "change", bar.render);
 
         var keys = new model_t.Keywords(conditions, data);

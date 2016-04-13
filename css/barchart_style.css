@@ -14,7 +14,7 @@ body {
 }
 
 .bar1 {
-    fill: lightskyblue;
+    fill: #337ab7;
 }
 
 .bar1:hover {
@@ -22,7 +22,7 @@ body {
 }
 
 .bar2 {
-    fill: pink;
+    fill: #5bc0de;
 }
 
 .bar2:hover {

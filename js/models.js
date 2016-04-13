@@ -19,11 +19,9 @@ var Conditions = Backbone.Model.extend({
         category: "States",
         option_1: "Alabama",
         option_2: "Alaska",
-        time_range: "day",
-        url: "../data/",
-        data: "../data/state_full.json"
+        time_range: "day"
     },
-    initialize: function(data) {
+    initialize: function() {
         //console.log(data);
         this.set("option_1", $("div#option-1 select").val());
         this.set("option_2", $("div#option-2 select").val());
@@ -40,8 +38,6 @@ var Con = Backbone.Model.extend({
         option_1: "Alabama",
         option_2: "Alaska",
         time_range: "day",
-        //url: "../data/",
-        //data: "../data/state_full.json"
         data: Object()
     },
     initialize: function(data) {

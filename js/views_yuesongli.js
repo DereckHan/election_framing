@@ -12,10 +12,10 @@ var BarSetView = Backbone.View.extend({
         $("#bar-chart")
     }),
     events: {
-        "click input[type=radio]": "getTopic",
+        "change input[type=radio]": "getTopic",
         "change #select-category": "getCategory",
-        "click #option-1-menu": "getOption1",
-        "click #option-2-menu": "getOption2",
+        "change #option-1-select": "getOption1",
+        "change #option-2-select": "getOption2",
         "click li a": "getTime",
     },
     initialize: function() {
@@ -24,8 +24,6 @@ var BarSetView = Backbone.View.extend({
     /*constructor: function(data) {
         console.log(this.model);
         model.set("data", data);
-        //this.model = conditions;
-        //console.log(data);
     },
     /*show: function(model) {
       alert(model.get("data"));
@@ -33,7 +31,8 @@ var BarSetView = Backbone.View.extend({
     template: _.template($("#barChartViewTemplate").html()),
     render: function(model) {
         var term_count = 5;
-        var color = ["lightskyblue", "pink"];
+        //var color = ["lightskyblue", "pink"];
+        var color = ["#337ab7", "#5bc0de"];
         var att = model.attributes;
         console.log(att);
 
@@ -98,6 +97,7 @@ var BarSetView = Backbone.View.extend({
         var comparisons = [att["option_1"], att["option_2"]];
         //Process data
         var Data = [{}, {}, {}, {}, {}];
+
         for (i = 0; i < term_count; i++) {
             Data[i]["keyword"] = Object.keys(data[att["option_1"]][att["topic"]]["day"].term_set)[i];
             Data[i][att["option_1"]] = data[att["option_1"]][att["topic"]]["day"].term_set[Data[i]["keyword"]][29];
@@ -112,10 +112,10 @@ var BarSetView = Backbone.View.extend({
         y.domain([-1, 1]);
 
         // x axis and y axis
-        /*svg.append("g")
+        svg.append("g")
             .attr("class", "x axis")
             .attr("transform", "translate(0," + height + ")")
-            .call(xAxis);*/
+            .call(xAxis);
         svg.append("g")
             .attr("class", "y axis axisLeft")
             .attr("transform", "translate(0,0)")
@@ -178,7 +178,7 @@ var BarSetView = Backbone.View.extend({
 
         // Draw legend
         var legendRectSize = 18,
-            legendWordSize = 40,
+            legendWordSize = 45,
             legendSpacing = 4;
 
         var legend = bars.append("g")
@@ -210,42 +210,34 @@ var BarSetView = Backbone.View.extend({
                 return comparisons[i % 2];
             });
         //});
-        //svg.selectAll(".legend").remove();
-        //svg.selectAll(".bar").remove();
-        //d3.select("svg").remove();
-        //this.$el.html(this.template(this.model.attributes));
     },
     getTopic: function(event) {
         var selectTopic = $(event.currentTarget);
-        // x console.log(selectTopic);
-        // x console.log(selectTopic.parent()[0].id);
-        /*var Topics = ["eco", "ter", "fed", "equ", "hea", "imm", "env", "gun"];
-        var i = 0;
-        for (i = 0; i < 8; i++) {
-            if (Topics[i] == selectTopic[0].id) 
-                break;
-        }*/
         this.model.set({ "topic": selectTopic.parent()[0].id });
         // x console.log(this.model.get("topic"));
     },
     getCategory: function(event) {
-        var selectCategory = event.target.value;
-        console.log(event.target);
-        /*var op1 = $("#option-1");
-        console.log(op1);
+        var selectCategory = event.currentTarget.value;
+        console.log(selectCategory);
         if (selectCategory == "Parties") {
-            //this.model.set({ "data": this.model.get('url') + "party_full.json" });
-            this.model.set({"option_1": "Democratic", "option_2": "Republican"});
+            this.model.set({ "category": selectCategory, "option_1": "Democratic", "option_2": "Republican" });
         } else if (selectCategory == "Candidates") {
-            //this.model.set({ "data": this.model.get('url') + "candidate_full.json" });
-            
-            this.model.set({"option_1": "Democratic", "option_2": "Republican"});
-        }*/
-
-        this.model.set({ "category": selectCategory });
-        console.log(this.model.get("category"));
-
-        //this.model.set({ "data": this.model.get('url') + "state_full.json" });
+            this.model.set({ "category": selectCategory, "option_1": "Hillary Clinton", "option_2": "Bernie Sanders" });
+        }
+    },
+    getOption1: function(event) {
+        var selectOption1 = event.currentTarget.value;
+        console.log(selectOption1);
+        this.model.set({ "option_1": selectOption1 });
+    },
+    getOption2: function(event) {
+        var selectOption2 = event.currentTarget.value;
+        console.log(selectOption2);
+        this.model.set({ "option_1": selectOption2 });
+    },
+    getTime: function(event) {
+        var selectTime = event.currentTarget.value;
+        console.log(selectTime);
     },
     clear: function() {
         this.model.destroy();
