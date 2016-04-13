@@ -35,18 +35,21 @@ var states_base = ["Alabama", "Alaska", "Arizona", "Arkansas", "California",
     ],
     parties_base = ["Democratic", "Republican"];
 
-$(document).ready(function() {
-    /*************** main content ***************/
-    var state = new model_t.State(),
-        party = new model_t.Party(),
-        candidate = new model_t.Candidate(),
-        conditions = new model_t.Conditions();
+var state = new model_t.State(),
+    party = new model_t.Party(),
+    candidate = new model_t.Candidate();
 
+$(document).ready(function() {
+    /*************** load DOMs ***************/
+    addOption(states_base);
+    conditions = new model_t.Conditions();
+
+    /*************** main content ***************/
     var data = {
-            "States": state,
-            "Candidates": candidate,
-            "Parties": party
-        };
+        "States": state,
+        "Candidates": candidate,
+        "Parties": party
+    };
 
     var bar = new View.BarSetView({
         model: conditions
@@ -67,16 +70,16 @@ $(document).ready(function() {
         $("div#option-2 select").selectpicker('refresh');
         switch (category) {
             case "States":
-                conditions.set({"category": "state"});
+                conditions.set("category", "States");
                 addOption(states_base);
                 break;
             case "Parties":
-                conditions.set({"category": "party"});
+                conditions.set("category", "Parties");
                 addOption(parties_base);
 
                 break;
             case "Candidates":
-                conditions.set({"category": "candidate"});
+                conditions.set("category", "Candidates");
                 addOption(candidates_base);
                 break;
         };
@@ -86,43 +89,33 @@ $(document).ready(function() {
         $("div#option-2 option").prop('disabled', false);
         $("div#option-2 option[value='" + option1 + "']").prop('disabled', true);
         $("div#option-2 select").selectpicker('refresh');
-        conditions.set({"option_1": $(this).val()});
+        conditions.set("option_1", $(this).val());
     });
     $("div#option-2 select").change(function() {
         var option2 = $(this).val();
         $("div#option-1 option").prop('disabled', false);
         $("div#option-1 option[value='" + option2 + "']").prop('disabled', true);
         $("div#option-1 select").selectpicker('refresh');
-        conditions.set({"option_2": $(this).val()});
+        conditions.set("option_2", $(this).val());
     });
     $("div#topic label").click(function() {
-        conditions.set({"topic": $(this).attr("id")});
+        conditions.set("topic", $(this).attr("id"));
     });
 
-    /*************** load DOMs ***************/
-    addOption(states_base);
+    $(".nav.nav-tabs.nav-justified li").click(function() {
+        var clicked = $(this).children().html().toLowerCase(),
+            origin = conditions.get("time_range");
+        if (clicked != origin) {
+            conditions.set("time_range", clicked);
+            $("#" + origin).removeClass("active");
+            $("#" + clicked).addClass("active");
+        }
+    });
 
-    function addOption(data) {
-        for (var i = 0; i < data.length; i++) {
-            $("div#option-1 select").append("<option value='" + data[i] + "'>" + data[i] + "</option>");
-            $("div#option-2 select").append("<option value='" + data[i] + "'>" + data[i] + "</option>");
-        };
-        $("div#option-1 select").val(data[0]);
-        $("div#option-2 option[value='" + data[0] + "']").prop('disabled', true);
-        $("div#option-2 select").val(data[1]);
-        $("div#option-1 option[value='" + data[1] + "']").prop('disabled', true);
-        conditions.set({"option_1": data[0]});
-        conditions.set({"option_2": data[1]});
-        $("div#option-1 select").selectpicker('refresh');
-        $("div#option-2 select").selectpicker('refresh');
-        $('#option-1 button').attr("class", "btn dropdown-toggle btn-primary");
-        $('#option-2 button').attr("class", "btn dropdown-toggle btn-info");
-    }
 
     /*************** test functions ***************/
-    conditions.on("change", function(){
-        console.log("conditions on change:");
-        console.log("topic: " + conditions.get("topic") + "\ncategory: " + conditions.get("category") + " \noption-1 :" + conditions.get("option_1") + " \noption_2 :" + conditions.get("option_2"));
+    conditions.on("change", function() {
+        console.log(conditions.attributes);
     })
 
     var state_data = state.fetch({
@@ -140,3 +133,18 @@ $(document).ready(function() {
         }
     });
 });
+
+function addOption(data) {
+    for (var i = 0; i < data.length; i++) {
+        $("div#option-1 select").append("<option value='" + data[i] + "'>" + data[i] + "</option>");
+        $("div#option-2 select").append("<option value='" + data[i] + "'>" + data[i] + "</option>");
+    };
+    $("div#option-1 select").val(data[0]);
+    $("div#option-2 option[value='" + data[0] + "']").prop('disabled', true);
+    $("div#option-2 select").val(data[1]);
+    $("div#option-1 option[value='" + data[1] + "']").prop('disabled', true);
+    $("div#option-1 select").selectpicker('refresh');
+    $("div#option-2 select").selectpicker('refresh');
+    $('#option-1 button').attr("class", "btn dropdown-toggle btn-primary");
+    $('#option-2 button').attr("class", "btn dropdown-toggle btn-info");
+}

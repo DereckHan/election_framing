@@ -29,8 +29,8 @@ var BarSetView = Backbone.View.extend({
         var term_count = 5;
         var color = ["lightskyblue", "pink"];
         var att = model.attributes;
-        console.log(att);
-        console.log(model.get("data"));
+        // x console.log(att);
+        // x console.log(model.get("data"));
 
         var margin = {
                 top: 50,
@@ -54,14 +54,14 @@ var BarSetView = Backbone.View.extend({
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function(d, i) {
-                console.log(i);
+                // x console.log(i);
                 return "<strong>" + Object.keys(d)[1] + ": <br> </strong> <span style='color:" + color[0] + "'>" + d[Object.keys(d)[1]] + "</span>";
             })
         var tip2 = d3.tip()
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function(d, i) {
-                console.log(i);
+                // x console.log(i);
                 return "<strong>" + Object.keys(d)[2] + ": <br> </strong> <span style='color:" + color[1] + "'>" + d[Object.keys(d)[2]] + "</span>";
             })
 
@@ -77,17 +77,17 @@ var BarSetView = Backbone.View.extend({
         svg.call(tip2);
 
         d3.json(model.get("data"), function(data) {
-            console.log(data);
-            if (att["category"] == "Parties") {
-                att["option_1"] = "Democrat";
-                att["option_2"] = "Republican";
-            } else if (att["category"] == "Candidates") {
-                att["option_1"] = "Hillary Clinton";
-                att["option_2"] = "Ted Cruz";
-            } else {
-                att["option_1"] = "Pennsylvania";
-                att["option_2"] = "Washington";
-            }
+            // x console.log(data);
+            // if (att["category"] == "Parties") {
+            //     att["option_1"] = "Democrat";
+            //     att["option_2"] = "Republican";
+            // } else if (att["category"] == "Candidates") {
+            //     att["option_1"] = "Hillary Clinton";
+            //     att["option_2"] = "Ted Cruz";
+            // } else {
+            //     att["option_1"] = "Pennsylvania";
+            //     att["option_2"] = "Washington";
+            // }
             var comparisons = [att["option_1"], att["option_2"]];
             //Process data
             var Data = [{}, {}, {}, {}, {}];
@@ -96,7 +96,7 @@ var BarSetView = Backbone.View.extend({
                 Data[i][att["option_1"]] = data[att["option_1"]][att["topic"]]["day"].term_set[Data[i]["keyword"]][29];
                 Data[i][att["option_2"]] = data[att["option_2"]][att["topic"]]["day"].term_set[Data[i]["keyword"]][29];
             }
-            console.log(Data);
+            // x console.log(Data);
 
             // svg domain
             x.domain(Data.map(function(d) {
@@ -210,7 +210,7 @@ var BarSetView = Backbone.View.extend({
     },
     getTopic: function(event) {
         var selectTopic = $(event.currentTarget);
-        console.log(selectTopic.parent()[0].id);
+        // x console.log(selectTopic.parent()[0].id);
         /*var Topics = ["eco", "ter", "fed", "equ", "hea", "imm", "env", "gun"];
         var i = 0;
         for (i = 0; i < 8; i++) {
@@ -218,11 +218,11 @@ var BarSetView = Backbone.View.extend({
                 break;
         }*/
         this.model.set({ "topic": selectTopic.parent()[0].id });
-        console.log(this.model.get("topic"));
+        // x console.log(this.model.get("topic"));
     },
     getCategory: function(event) {
         var selectCategory = event.target.value;
-        console.log(selectCategory);
+        // x console.log(selectCategory);
         this.model.set({ "category": selectCategory });
         this.model.set({ "data": this.model.get('url') + "state_full.json" });
         if (this.model.get("category") == "Parties") {

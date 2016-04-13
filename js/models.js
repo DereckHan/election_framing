@@ -17,12 +17,19 @@ var Conditions = Backbone.Model.extend({
     defaults: {
         topic: "eco",
         category: "States",
-        option_1: "Pennsylvania",
-        option_2: "Washington",
+        option_1: "Alabama",
+        option_2: "Alaska",
         time_range: "day",
         url: "../data/",
         data: "../data/state_full.json"
     },
+    initialize: function() {
+        this.set("option_1", $("div#option-1 select").val());
+        this.set("option_2", $("div#option-2 select").val());
+        this.set("topic", $("div#topic label").attr("id"));
+        this.set("category", $("div#category select").val());
+        this.set("time_range", $(".nav.nav-tabs.nav-justified li.active a").html().toLowerCase());
+    }
 });
 
 var Line = Backbone.Model.extend({
@@ -64,7 +71,7 @@ var Keywords = Backbone.Model.extend({
                 data_obj = data_obj.attributes;
                 keyset = data_obj[option][topic][time_range];
                 // var keyset = Object.keys(data[category].attributes[option][topic][time_range]["term_set"]);
-                self.attributes = keyset; 
+                self.attributes = keyset;
             }
         })
 
