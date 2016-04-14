@@ -26,7 +26,7 @@
             <!-- <input id="show" type='button' value="show" />-->
         </div>
         <div class="row panel panel-info" id="topic">
-            <div class="panel-heading">
+            <div class="panel-heading anchor" href="#trend">
                 <h4 class="panel-title">Select a topic</h4>
             </div>
             <div class="panel-body">
@@ -90,10 +90,10 @@
                 <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12" id="charts">
                     <div id="bar">
                         <div id="bar-head">
-                            <ul class="nav nav-tabs nav-justified">
-                                <li id="day" role="presentation" class="active"><a href="#">Day</a></li>
-                                <li id="week" role="presentation"><a href="#">Week</a></li>
-                                <li id="month" role="presentation"><a href="#">Month</a></li>
+                            <ul id="bar-time-range" class="nav nav-tabs nav-justified">
+                                <li id="bar-day" role="presentation" class="active"><a href="#trend">Day</a></li>
+                                <li id="bar-week" role="presentation"><a href="#trend">Week</a></li>
+                                <li id="bar-month" role="presentation"><a href="#trend">Month</a></li>
                             </ul>
                         </div>
                         <div class="panel panel-default">
@@ -107,18 +107,12 @@
                             <svg class="barchart-view"></svg>
                         </div>
                     </div>
-                    <div id="keywords">
-                        <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
-                            <a href="#" class="btn btn-default" role="button">keyword1</a>
-                            <a href="#" class="btn btn-default" role="button">keyrowd2</a>
-                            <a href="#" class="btn btn-default" role="button">keyrowd3</a>
-                            <a href="#" class="btn btn-default" role="button">keyrowd4</a>
-                            <a href="#" class="btn btn-default" role="button">keyrowd5</a>
-                        </div>
-                    </div>
                     <div id="line">
-                        <div id="line-chart">
-                            <svg class="linechart-view"></svg>
+                        <div id="line-head">
+                            <ul id="line-time-range" class="nav nav-tabs nav-justified">
+                                <li id="line-week" role="presentation" class="active"><a href="#trend">Week</a></li>
+                                <li id="line-month" role="presentation"><a href="#trend">Month</a></li>
+                            </ul>
                         </div>
                         <div class="panel panel-default">
                             <div class="panel-body">
@@ -127,11 +121,8 @@
                                 </p>
                             </div>
                         </div>
-                        <div id="line-footer">
-                            <div id="time-for-line" class="btn-group btn-group-justified" role="group" data-toggle="buttons">
-                                <label id="week-for-line" class="btn btn-default active">Week</label>
-                                <label id="month-for-line" class="btn btn-default">Month</label>
-                            </div>
+                        <div id="line-chart">
+                            <svg class="linechart-view"></svg>
                         </div>
                     </div>
                 </div>

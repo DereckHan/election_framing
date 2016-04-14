@@ -77,11 +77,12 @@ $(document).ready(function() {
         bar.listenTo(con, "change", bar.render);
 
         var keys = new model_t.Keywords(conditions, data);
-        var line = new view_t.LineSetView(conditions, data);
+        var lineView = new view_t.LineSetView(conditions, data);
+        var line = new model_t.Line(keys);
 
         conditions.on("change", function() {
             keys.loadNewKeys(conditions, data);
-            line.render();
+            lineView.render();
         });
     });
 
@@ -138,13 +139,23 @@ $(document).ready(function() {
         conditions.set("topic", $(this).attr("id"));
     });
 
-    $(".nav.nav-tabs.nav-justified li").click(function() {
+    $("#bar-time-range li").click(function() {
         var clicked = $(this).children().html().toLowerCase(),
             origin = conditions.get("time_range");
         if (clicked != origin) {
             conditions.set("time_range", clicked);
-            $("#" + origin).removeClass("active");
-            $("#" + clicked).addClass("active");
+            $("#bar-" + origin).removeClass("active");
+            $("#bar-" + clicked).addClass("active");
+        }
+    });
+
+    $("#line-time-range li").click(function() {
+        var clicked = $(this).children().html().toLowerCase(),
+            origin = line.get("line_time_range");
+        if (clicked != origin) {
+            line.set("line_time_range", clicked);
+            $("#line-" + origin).removeClass("active");
+            $("#line-" + clicked).addClass("active");
         }
     });
 

@@ -55,17 +55,11 @@ var Line = Backbone.Model.extend({
     defaults: {
         keyword: "",
         datapoints: [],
+        line_time_range: "week"
     },
-    initialize: function() {
-        // load data from server.
-    },
-    conditionChange: function(conditions) {
-        // call when conditions changed
-        // reload parameters from server.
-    },
-    constructor: function() {
-        arguments.parse = true;
-        Backbone.Model.apply(this, arguments);
+    constructor: function(keys) {
+        this.set("keys", keys);
+        console.log(this);
     }
 });
 
@@ -101,14 +95,6 @@ var Party = Backbone.Model.extend({
 
 
 /***************
- * Collections 
- ***************/
-var LineSet = Backbone.Collection.extend({
-    model: Line
-
-});
-
-/***************
  * exports
  ***************/
 module.exports = {
@@ -120,5 +106,5 @@ module.exports = {
     State: State,
     Candidate: Candidate,
     Party: Party,
-    LineSet: LineSet
+    Line: Line
 };
