@@ -16,7 +16,7 @@ var BarSetView = Backbone.View.extend({
         "change #select-category": "getCategory",
         "change #option-1-select": "getOption1",
         "change #option-2-select": "getOption2",
-        "click li a": "getTime",
+        "click li": "getTime",
     },
     initialize: function() {
         //this.$el.html(this.template(this.model.attributes));
@@ -34,7 +34,7 @@ var BarSetView = Backbone.View.extend({
         //var color = ["lightskyblue", "pink"];
         var color = ["#337ab7", "#5bc0de"];
         var att = model.attributes;
-        console.log(att);
+        //console.log(att);
 
         var margin = {
                 top: 50,
@@ -93,17 +93,18 @@ var BarSetView = Backbone.View.extend({
         //     att["option_2"] = "Washington";
         // }
         var data = (att["data"][att["category"]]).attributes;
-        console.log(data);
+        //console.log(data);
         var comparisons = [att["option_1"], att["option_2"]];
         //Process data
         var Data = [{}, {}, {}, {}, {}];
 
         for (i = 0; i < term_count; i++) {
-            Data[i]["keyword"] = Object.keys(data[att["option_1"]][att["topic"]]["day"].term_set)[i];
-            Data[i][att["option_1"]] = data[att["option_1"]][att["topic"]]["day"].term_set[Data[i]["keyword"]][29];
-            Data[i][att["option_2"]] = data[att["option_2"]][att["topic"]]["day"].term_set[Data[i]["keyword"]][29];
+            var time = att["time_range"];
+            Data[i]["keyword"] = Object.keys(data[att["option_1"]][att["topic"]][time].term_set)[i];
+            Data[i][att["option_1"]] = data[att["option_1"]][att["topic"]][time].term_set[Data[i]["keyword"]][29];
+            Data[i][att["option_2"]] = data[att["option_2"]][att["topic"]][time].term_set[Data[i]["keyword"]][29];
         }
-        console.log(Data);
+        //console.log(Data);
 
         // svg domain
         x.domain(Data.map(function(d) {
@@ -111,6 +112,19 @@ var BarSetView = Backbone.View.extend({
         }));
         y.domain([-1, 1]);
 
+        xAxis.tickValues(Data.map(function(d) {
+                return d.keyword;
+            }))
+            .tickFormat(function(d) {
+                var word = d.split(" ");
+                var string = word[0];
+                for (i = 1; i < word.length; i++) {
+                    //console.log(string);
+                    string = string + "<br>" + word[i];
+                }
+                console.log(string);
+                return d;
+            });
         // x axis and y axis
         svg.append("g")
             .attr("class", "x axis")
@@ -236,8 +250,9 @@ var BarSetView = Backbone.View.extend({
         this.model.set({ "option_1": selectOption2 });
     },
     getTime: function(event) {
-        var selectTime = event.currentTarget.value;
+        var selectTime = event.currentTarget.id;
         console.log(selectTime);
+        this.model.set({"time_range": selectTime});
     },
     clear: function() {
         this.model.destroy();
