@@ -27,7 +27,7 @@ var Conditions = Backbone.Model.extend({
         this.set("option_2", $("div#option-2 select").val());
         this.set("topic", $("div#topic label").attr("id"));
         this.set("category", $("div#category select").val());
-        this.set("time_range", $(".nav.nav-tabs.nav-justified li.active a").html().toLowerCase());
+        this.set("time_range", $("#bar-time-range li.active a").html().toLowerCase());
     }
 });
 
@@ -52,14 +52,12 @@ var Con = Backbone.Model.extend({
 });
 
 var Line = Backbone.Model.extend({
-    defaults: {
-        keyword: "",
-        datapoints: [],
-        line_time_range: "week"
-    },
     constructor: function(keys) {
-        this.set("keys", keys);
-        console.log(this);
+        this.attributes = {
+            line_time_range: "week",
+            begin_time: keys.get("begin_time"),
+            term_set: keys.get("term_set")
+        };
     }
 });
 
@@ -77,7 +75,6 @@ var Keywords = Backbone.Model.extend({
             option = conditions.get("option_" + "1"),
             time_range = conditions.get("time_range");
         this.attributes = data[category].attributes[option][topic][time_range];
-        console.log(this.attributes);
     }
 });
 
@@ -105,6 +102,5 @@ module.exports = {
     Keywords: Keywords,
     State: State,
     Candidate: Candidate,
-    Party: Party,
-    Line: Line
+    Party: Party
 };

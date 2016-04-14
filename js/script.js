@@ -84,6 +84,16 @@ $(document).ready(function() {
             keys.loadNewKeys(conditions, data);
             lineView.render();
         });
+
+        $("#line-time-range li").click(function() {
+            var clicked = $(this).children().html().toLowerCase();
+            var origin = line.get("line_time_range");
+            if (clicked != origin) {
+                line.set("line_time_range", clicked);
+                $("#line-time-range #" + origin).removeClass("active");
+                $("#line-time-range #" + clicked).addClass("active");
+            }
+        });
     });
 
     /*************** single element change ***************/
@@ -144,18 +154,8 @@ $(document).ready(function() {
             origin = conditions.get("time_range");
         if (clicked != origin) {
             conditions.set("time_range", clicked);
-            $("#bar-" + origin).removeClass("active");
-            $("#bar-" + clicked).addClass("active");
-        }
-    });
-
-    $("#line-time-range li").click(function() {
-        var clicked = $(this).children().html().toLowerCase(),
-            origin = line.get("line_time_range");
-        if (clicked != origin) {
-            line.set("line_time_range", clicked);
-            $("#line-" + origin).removeClass("active");
-            $("#line-" + clicked).addClass("active");
+            $("#bar-time-range #" + origin).removeClass("active");
+            $("#bar-time-range #" + clicked).addClass("active");
         }
     });
 
@@ -175,4 +175,3 @@ function addOption(data) {
     $('#option-1 button').attr("class", "btn dropdown-toggle btn-primary");
     $('#option-2 button').attr("class", "btn dropdown-toggle btn-info");
 }
-

@@ -16,7 +16,7 @@ var BarSetView = Backbone.View.extend({
         "change #select-category": "getCategory",
         "change #option-1-select": "getOption1",
         "change #option-2-select": "getOption2",
-        "click li": "getTime",
+        "click #bar-time-range li": "getTime",
     },
     initialize: function() {
         //this.$el.html(this.template(this.model.attributes));
@@ -58,14 +58,12 @@ var BarSetView = Backbone.View.extend({
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function(d, i) {
-                // x console.log(i);
                 return "<strong>" + Object.keys(d)[1] + ": <br> </strong> <span style='color:" + color[0] + "'>" + d[Object.keys(d)[1]] + "</span>";
             })
         var tip2 = d3.tip()
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function(d, i) {
-                // x console.log(i);
                 return "<strong>" + Object.keys(d)[2] + ": <br> </strong> <span style='color:" + color[1] + "'>" + d[Object.keys(d)[2]] + "</span>";
             })
 
@@ -81,7 +79,6 @@ var BarSetView = Backbone.View.extend({
         svg.call(tip2);
 
         //d3.json(model.get("data"), function(data) {
-        // x console.log(data);
         // if (att["category"] == "Parties") {
         //     att["option_1"] = "Democrat";
         //     att["option_2"] = "Republican";
@@ -125,7 +122,6 @@ var BarSetView = Backbone.View.extend({
                 console.log(string);
                 return d;
             });
-        // x axis and y axis
         svg.append("g")
             .attr("class", "x axis")
             .attr("transform", "translate(0," + height + ")")
@@ -227,32 +223,47 @@ var BarSetView = Backbone.View.extend({
     },
     getTopic: function(event) {
         var selectTopic = $(event.currentTarget);
-        this.model.set({ "topic": selectTopic.parent()[0].id });
-        // x console.log(this.model.get("topic"));
+        this.model.set({
+            "topic": selectTopic.parent()[0].id
+        });
     },
     getCategory: function(event) {
         var selectCategory = event.currentTarget.value;
         console.log(selectCategory);
         if (selectCategory == "Parties") {
-            this.model.set({ "category": selectCategory, "option_1": "Democratic", "option_2": "Republican" });
+            this.model.set({
+                "category": selectCategory,
+                "option_1": "Democratic",
+                "option_2": "Republican"
+            });
         } else if (selectCategory == "Candidates") {
-            this.model.set({ "category": selectCategory, "option_1": "Hillary Clinton", "option_2": "Bernie Sanders" });
+            this.model.set({
+                "category": selectCategory,
+                "option_1": "Hillary Clinton",
+                "option_2": "Bernie Sanders"
+            });
         }
     },
     getOption1: function(event) {
         var selectOption1 = event.currentTarget.value;
         console.log(selectOption1);
-        this.model.set({ "option_1": selectOption1 });
+        this.model.set({
+            "option_1": selectOption1
+        });
     },
     getOption2: function(event) {
         var selectOption2 = event.currentTarget.value;
         console.log(selectOption2);
-        this.model.set({ "option_1": selectOption2 });
+        this.model.set({
+            "option_1": selectOption2
+        });
     },
     getTime: function(event) {
         var selectTime = event.currentTarget.id;
         console.log(selectTime);
-        this.model.set({"time_range": selectTime});
+        this.model.set({
+            "time_range": selectTime
+        });
     },
     clear: function() {
         this.model.destroy();
