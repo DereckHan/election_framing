@@ -255,7 +255,7 @@ var BarSetView = Backbone.View.extend({
         var selectOption2 = event.currentTarget.value;
         console.log(selectOption2);
         this.model.set({
-            "option_1": selectOption2
+            "option_2": selectOption2
         });
     },
     getTime: function(event) {
