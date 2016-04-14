@@ -34,7 +34,7 @@ var BarSetView = Backbone.View.extend({
         //var color = ["lightskyblue", "pink"];
         var color = ["#337ab7", "#5bc0de"];
         var att = model.attributes;
-        //console.log(att);
+        console.log(att);
 
         var margin = {
                 top: 50,
@@ -119,7 +119,7 @@ var BarSetView = Backbone.View.extend({
                     //console.log(string);
                     string = string + "<br>" + word[i];
                 }
-                console.log(string);
+                //console.log(string);
                 return d;
             });
         svg.append("g")
@@ -241,6 +241,13 @@ var BarSetView = Backbone.View.extend({
                 "category": selectCategory,
                 "option_1": "Hillary Clinton",
                 "option_2": "Bernie Sanders"
+            });
+        }
+        else {
+            this.model.set({
+                "category": selectCategory,
+                "option_1": "Alabama",
+                "option_2": "Alaska"
             });
         }
     },
