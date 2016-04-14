@@ -12,6 +12,10 @@ body {
     stroke: #000;
     shape-rendering: crispEdges;
 }
+.axis text {
+    fill: steelblue;
+    font-size: 11px;
+}
 
 .bar1 {
     fill: #337ab7;
