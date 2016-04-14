@@ -3,7 +3,7 @@
 // model_t -> Model
 var view_t = require('./views.js');
 var model_t = require('./models.js');
-var View = require('./views_yuesongli.js');
+var View = require('./views_yuesongli.js'); 
 
 /*************** Js ***************/
 var $ = require("jquery");
@@ -60,6 +60,7 @@ $(document).ready(function() {
     });
     $.when(stateRequest, partyRequest, candidateRequest).done(function() {
         state.attributes = stateJSON;
+
         party.attributes = partyJSON;
         candidate.attributes = candidateJSON;
 
@@ -73,12 +74,14 @@ $(document).ready(function() {
         var bar = new View.BarSetView({
             model: con
         });
+        bar.render(con);
         bar.listenTo(con, "change", bar.clear);
         bar.listenTo(con, "change", bar.render);
 
         var keys = new model_t.Keywords(conditions, data);
-        var lineView = new view_t.LineSetView(conditions, data);
         var line = new model_t.Line(keys);
+        console.log(line.get("term_set"));
+        var lineView = new view_t.LineSetView(line, conditions, data);
 
         conditions.on("change", function() {
             keys.loadNewKeys(conditions, data);
