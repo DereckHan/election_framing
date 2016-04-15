@@ -132,3 +132,7 @@ ul {
 #tweets #twitter-widget-0 {
     width: 100% !important;
 }
+
+#tweet-content {
+    margin-top: -15px;
+}

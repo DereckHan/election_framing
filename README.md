@@ -7,21 +7,27 @@ What topics are people caring about during the election campaign? For a specific
 
 ## Installation
 
-With [npm](https://www.npmjs.com/) do:
+- With [npm](https://www.npmjs.com/) do:
 
-```
-npm install
-```
+    ```
+    npm install
+    ```
 
-With [webpack](https://webpack.github.io/) do:
+- With [webpack](https://webpack.github.io/) do:
 
-```
-webpack
-```
+    ```
+    webpack
+    ```
+
+    or for development:
+    ```
+    webpack --process --color --watch
+    ```
 
 ## Notes
 
-python http server
-```
-python -m SimpleHTTPServer 8080
-```
+- python http server
+
+    ```
+    python -m SimpleHTTPServer 8080
+    ```

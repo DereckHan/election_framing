@@ -79,20 +79,25 @@ $(document).ready(function() {
         bar.listenTo(con, "change", bar.render);
 
         var keys = new model_t.Keywords(conditions, data);
-        var line = new model_t.Line(keys);
-        console.log(line.get("term_set"));
-        var lineView = new view_t.LineSetView(line, conditions, data);
+        var line = new model_t.Line("","",[]);
+        var lineSet = new model_t.LineSet(conditions, data, keys);
+        //var lineView = new view_t.LineSetView(line, conditions, data);
 
         conditions.on("change", function() {
             keys.loadNewKeys(conditions, data);
-            lineView.render();
+            //lineView.render();
+        });
+
+        keys.on("change", function(){
+            console.log("yes");
+            lineSet.loadLines(conditions, data, keys);
         });
 
         $("#line-time-range li").click(function() {
             var clicked = $(this).children().html().toLowerCase();
-            var origin = line.get("line_time_range");
+            var origin = lineSet.attributes["line_time_range"];
             if (clicked != origin) {
-                line.set("line_time_range", clicked);
+                lineSet.attributes["line_time_range"] = clicked;
                 $("#line-time-range #" + origin).removeClass("active");
                 $("#line-time-range #" + clicked).addClass("active");
             }
@@ -130,9 +135,7 @@ $(document).ready(function() {
         conditions.set("option_1", $("div#option-1 select").val(), {
             silent: true
         });
-        conditions.set("option_2", $("div#option-2 select").val(), {
-            silent: true
-        });
+        conditions.set("option_2", $("div#option-2 select").val());
     });
     $("div#option-1 select").change(function() {
         var option1 = $(this).val();

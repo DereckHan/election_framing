@@ -34,7 +34,7 @@ var BarSetView = Backbone.View.extend({
         //var color = ["lightskyblue", "pink"];
         var color = ["#337ab7", "#5bc0de"];
         var att = model.attributes;
-        console.log(att);
+        // console.log(att);
 
         var margin = {
                 top: 50,
@@ -229,7 +229,7 @@ var BarSetView = Backbone.View.extend({
     },
     getCategory: function(event) {
         var selectCategory = event.currentTarget.value;
-        console.log(selectCategory);
+        // console.log(selectCategory);
         if (selectCategory == "Parties") {
             this.model.set({
                 "category": selectCategory,
@@ -253,21 +253,21 @@ var BarSetView = Backbone.View.extend({
     },
     getOption1: function(event) {
         var selectOption1 = event.currentTarget.value;
-        console.log(selectOption1);
+        // console.log(selectOption1);
         this.model.set({
             "option_1": selectOption1
         });
     },
     getOption2: function(event) {
         var selectOption2 = event.currentTarget.value;
-        console.log(selectOption2);
+        // console.log(selectOption2);
         this.model.set({
             "option_2": selectOption2
         });
     },
     getTime: function(event) {
         var selectTime = event.currentTarget.id;
-        console.log(selectTime);
+        // console.log(selectTime);
         this.model.set({
             "time_range": selectTime
         });
