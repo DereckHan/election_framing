@@ -50,26 +50,21 @@ var Con = Backbone.Model.extend({
 });
 
 var Line = Backbone.Model.extend({
-    constructor: function(name, shortName, scoreArray) {
+    initialize: function(name, shortName, scoreArray) {
         this.attributes = {
             name: name,
             shortName: shortName,
             scoreArray: scoreArray
         };
-    },
+    }
 });
 
 var LineSet = Backbone.Collection.extend({
     model: Line,
-    constructor: function(conditions, data, keys) {
-        this.loadLines(conditions, data, keys);
-        this.attributes = {
-            line_time_range: "week",
-            begin_time: keys.get("begin_time"),
-            end_time: parseDate(data[conditions.get("category")].get("time"))
-        };
-    },
     loadLines: function(conditions, data, keys) {
+        this.reset();
+        this.attributes={};
+        this.attributes["end_time"] = keys.get("end_time");
         var term_selected = keys.get("term_selected"),
             self = this;
         term_selected.forEach(function(term, index) {
@@ -78,36 +73,48 @@ var LineSet = Backbone.Collection.extend({
                 shortName = simplify(conditions.get("option_1")) + "-" + simplify(term),
                 scoreArray = data_obj.get([conditions.get("option_1")])[conditions.get("topic")][conditions.get("time_range")]["term_set"][term];
             var line1 = new Line(name, shortName, scoreArray);
-            line1.cid = (2 * index).toString();
-            console.log(line1.cid);
             self.add(line1);
             name = conditions.get("option_2") + "-" + term;
             shortName = simplify(conditions.get("option_2")) + "-" + simplify(term);
             scoreArray = data_obj.get([conditions.get("option_2")])[conditions.get("topic")][conditions.get("time_range")]["term_set"][term];
             var line2 = new Line(name, shortName, scoreArray);
-            line2.cid = (2 * index + 1).toString();
             self.add(line2);
         });
-        console.log(this.length);
+        this.setTimeRange($("#line-time-range li").children().html().toLowerCase());
+    },
+    setTimeRange: function(line_time_range) {
+        this.attributes["time_range"] = line_time_range;
+        this.setBeginTime();
+    },
+    setBeginTime: function() {
+        var year = this.attributes["end_time"].getFullYear(),
+            month = this.attributes["end_time"].getMonth(),
+            day = this.attributes["end_time"].getDate();
+        switch (this.attributes["time_range"]) {
+            case "week":
+                this.attributes["begein_time"] = new Date(year, month, day - 7);
+                break;
+            case "month":
+                var previous = (new Date(year, month, 0)).getDate();
+                this.attributes["begein_time"] = new Date(year, month, day - previous);
+                break;
+            default:
+                break;
+        }
     }
 });
 
 var Keywords = Backbone.Model.extend({
-    constructor: function(conditions, data) {
-        this.loadNewKeys(conditions, data);
-    },
+    initialize: function() {},
     loadNewKeys: function(conditions, data) {
-        var topic = conditions.get("topic"),
-            category = conditions.get("category"),
-            option = conditions.get("option_" + "1"),
-            time_range = conditions.get("time_range");
-        var timed_obj = data[category].attributes[option][topic][time_range];
-        this.attributes = {
-            term_selected: Object.keys(timed_obj["term_set"]),
-            begin_time: parseDate(timed_obj["begin_time"]),
-            time_range: time_range
-        };
-        console.log(this);
+        // term_selected within time_range from begein_time to end_time.        
+        this.clear;
+        var time_range = conditions.get("time_range");
+        var timed_obj = data[conditions.get("category")].attributes[conditions.get("option_" + "1")][conditions.get("topic")][time_range];
+        this.set("term_selected", Object.keys(timed_obj["term_set"]));
+        this.set("begin_time", parseDate(timed_obj["begin_time"]));
+        this.set("time_range", time_range);
+        this.set("end_time", parseDate(data[conditions.get("category")].get("time")));
     }
 });
 

@@ -3,7 +3,7 @@
 // model_t -> Model
 var view_t = require('./views.js');
 var model_t = require('./models.js');
-var View = require('./views_yuesongli.js'); 
+var View = require('./views_yuesongli.js');
 
 /*************** Js ***************/
 var $ = require("jquery");
@@ -78,26 +78,25 @@ $(document).ready(function() {
         bar.listenTo(con, "change", bar.clear);
         bar.listenTo(con, "change", bar.render);
 
-        var keys = new model_t.Keywords(conditions, data);
-        var line = new model_t.Line("","",[]);
-        var lineSet = new model_t.LineSet(conditions, data, keys);
-        //var lineView = new view_t.LineSetView(line, conditions, data);
+        var keys = new model_t.Keywords();
+        keys.loadNewKeys(conditions, data);
+        var lineSet = new model_t.LineSet();
+        lineSet.loadLines(conditions, data, keys);
+        var lineView = new view_t.LineSetView({
+            collection: lineSet
+        });
 
         conditions.on("change", function() {
             keys.loadNewKeys(conditions, data);
-            //lineView.render();
-        });
-
-        keys.on("change", function(){
-            console.log("yes");
             lineSet.loadLines(conditions, data, keys);
+            console.log(lineSet);
         });
 
         $("#line-time-range li").click(function() {
             var clicked = $(this).children().html().toLowerCase();
-            var origin = lineSet.attributes["line_time_range"];
+            var origin = lineSet.attributes["time_range"];
             if (clicked != origin) {
-                lineSet.attributes["line_time_range"] = clicked;
+                lineSet.setTimeRange(clicked);
                 $("#line-time-range #" + origin).removeClass("active");
                 $("#line-time-range #" + clicked).addClass("active");
             }
@@ -123,7 +122,6 @@ $(document).ready(function() {
                     silent: true
                 });
                 addOption(parties_base);
-
                 break;
             case "Candidates":
                 conditions.set("category", "Candidates", {
