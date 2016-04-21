@@ -2,54 +2,67 @@
 
 ## format
 
-Json state
-- `state_set`: `list`
-	+ `state`: `string`
-	+ `topic_set`:`list`:
-		+ `topic`:`string`
-		+ `time_set`:`list`:
-			+ `time_type`:`string`
-			+ `term_set`:`list`:
-				+ `term`:`string`
-				+ `score_set`:`list`:
-					+ `score`:`float`
+`state.json`:
 
-Json candidate
-- `candidate_set`: `list`
-	+ `candidate`: `string`
-	+ `topic_set`:`list`:
-		+ `topic`:`string`
-		+ `time_set`:`list`:
-			+ `time_type`:`string`
-			+ `term_set`:`list`:
-				+ `term`:`string`
-				+ `score_set`:`list`:
-					+ `score`:`float`
+- "`time`": `String` - the latest date within the data, in format "`MM/DD/YYYY`"
+- "State1": `Object` - all states, detail is listed [here](./source.json).
+	+ "`eco`": `Object` - topics, [detail](./README.md#topic-list)
+		* "`day`": `Object` - time range that the `term_set` been extracted from
+			- "`begin_time`": `String` - the begining date, (same as "`time` here), format "`MM/DD/YYYY`"
+			- "`term_set`": `Object`
+				+ "term1": `List` - score list, [detail](./README.md#length-of-the-term-list)
+				+ "term2": `List`
+				+ "term3": `List`
+				+ "term4": `List`
+				+ "term5": `List`
+		* "`week`": `Object`
+			- "`begin_time`": "`String`"- the begining date of time range "`week`", in format "`MM/DD/YYYY`"
+			- "`term_set`": `Object`
+				+ ...
+		* "`month`" :`Object`
+	+ "`for`": `Object`
+		* "`day`": `Object`
+			- ...
+		* "`week`": `Object`
+		* "`month`": `Object`
+	+ "`fed`": `Object`
+	+ "`equ`": `Object`
+	+ "`hea`": `Object`
+	+ "`imm`": `Object`
+	+ "`env`": `Object`
+	+ "`gun`": `Object`
+- "State2": `Object`
+	+ "`eco`": `Object`
+	+ "`for`": `Object`
+	+ ...
+	+ "`gun`": `Object`
+- "State3": `Object`
+- "State4": `Object`
+- "State5": `Object`
+- "State6": `Object`
+- ...
+- "State50": `Object`
 
-Json party
-- `party_set`: `list`
-	+ `party`: `string`
-	+ `topic_set`:`list`:
-		+ `topic`:`string`
-		+ `time_set`:`list`:
-			+ `time_type`:`string`
-			+ `term_set`:`list`:
-				+ `term`:`string`
-				+ `score_set`:`list`:
-					+ `score`:`float`
+`candidate.json` and `party.json` follow almost the same format as that of `state.json`. Replacing states list with candidate/party list is all need to do.
+
 
 ## description
 
-`state_set`: 52 states for the election;
+### topic list
 
-`candidate_set`: 26 candidates for the election;
+```json
+{
+	"eco":"Economy",
+	"for":"Foreign Policy",
+	"fed":"Federal Budget",
+	"equ":"Equality",
+	"hea":"Health Care",
+	"imm":"Immigration",
+	"env":"Environment",
+	"gun":"Guns"
+}
+```
 
-`party_set`: Democrate and Republican;
+### length of the term list
 
-`topic_set`: list of 8 `topic` object;
-
-`time_set`: day,week,month;
-
-`term_set`: list of 5 `term` object for the selection;
-
-`score_set`: list of 7 `score` object for the latest week;
+The length of the term set list equels to the number of days in previous month.
