@@ -1,7 +1,39 @@
-/* temple */
 
-.container {}
+/**
+ * loading
+ */
 
+#loading {
+    background-color: #00aeef;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100%;
+    margin: 0 auto;
+}
+
+#loading img {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+}
+
+#loading p {
+    font-size: 35px;
+    text-align: center;
+    font-weight: 400;
+    line-height: 2em;
+    color: #333;
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+}
 
 /*
  * banner
@@ -155,3 +187,4 @@ ul {
         margin-top: -15px;
     }
 }
+

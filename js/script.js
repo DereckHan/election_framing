@@ -6,13 +6,13 @@ var model_t = require('./models.js');
 var View = require('./views_yuesongli.js');
 
 /*************** Js ***************/
+require('../css/style.css');
+require('../css/xynoci.css');
+require('../css/barchart_style.css');
 var $ = require("jquery");
 window.$ = window.jQuery = $;
 var d3 = require('d3');
 var _ = require('underscore');
-require('../css/style.css');
-require('../css/xynoci.css');
-require('../css/barchart_style.css');
 
 /*************** resources ***************/
 var states_base = ["Alabama", "Alaska", "Arizona", "Arkansas", "California",
@@ -60,6 +60,8 @@ $(document).ready(function() {
         candidateJSON = data;
     });
     $.when(stateRequest, partyRequest, candidateRequest).done(function() {
+        $('#loading').css("display","none");
+        $('.container').css("display", "block");
         state.attributes = stateJSON;
 
         party.attributes = partyJSON;
