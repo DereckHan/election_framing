@@ -11,7 +11,7 @@ var LineSetView = Backbone.View.extend({
     }),
     render: function() {
         var margin = {
-            top: 35,
+            top: 25,
             right: 25,
             bottom: 25,
             left: 30
@@ -25,9 +25,10 @@ var LineSetView = Backbone.View.extend({
             num_ticks_x = Math.round(Math.abs((end.getTime() - start.getTime()) / (24 * 60 * 60 * 1000))),
             num_ticks_y = 5,
             width = $("#line-chart").width() - margin.left - margin.right,
-            height = Math.ceil((width * graphic_aspect_height) / graphic_aspect_width) - margin.top - margin.bottom,
-            color = d3.scale.category20(),
-            colors = ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5'];
+            height = Math.ceil((width * graphic_aspect_height) / graphic_aspect_width) - margin.top - margin.bottom;
+        // var color = d3.scale.category20();
+        // var colors = ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5'];
+        var colors = ["#337ab7", "#5bc0de"];
 
         var time_range = this.collection.attributes["time_range"];
 
@@ -92,7 +93,7 @@ var LineSetView = Backbone.View.extend({
                 x: -25,
                 y: 0
             })
-            .text("Sentimental Score");
+            .text("Sentimental Score: " + this.collection.models[0].get("key"));
 
         d3.selectAll("g.xScale g.tick")
             .append("line")
@@ -112,11 +113,11 @@ var LineSetView = Backbone.View.extend({
 
         // add legend
         var legend = svg.append('g'),
-            lineNames = this.collection.pluck("name"),
+            lineNames = this.collection.pluck("option"),
             shortNames = this.collection.pluck("shortName");
 
         legend.selectAll("text")
-            .data(shortNames)
+            .data(lineNames)
             .enter()
             .append("text")
             .text(function(d) {
@@ -125,22 +126,25 @@ var LineSetView = Backbone.View.extend({
             .attr({
                 class: "legend",
                 x: function(d, i) {
-                    return ((i + 1) % 5) * 70;
+                    return (i % 5) * 70;
                 },
                 y: function(d, i) {
                     if (i > 4) return 25;
                     return 5;
                 },
-                fill: color
+                // fill: color
+                fill: function(d, i) {
+                    return colors[i];
+                }
             });
 
         legend.selectAll("rect")
-            .data(shortNames)
+            .data(lineNames)
             .enter()
             .append("rect")
             .attr({
                 x: function(d, i) {
-                    return ((i + 1) % 5) * 70 - 15;
+                    return (i % 5) * 70 - 15;
                 },
                 y: function(d, i) {
                     if (i > 4) return 15;
@@ -148,10 +152,13 @@ var LineSetView = Backbone.View.extend({
                 },
                 width: 12,
                 height: 12,
-                fill: color
+                // fill: color
+                fill: function(d, i) {
+                    return colors[i];
+                }
             });
         legend.attr("class", "legend")
-            .attr("transform", "translate(" + (width + margin.left - (shortNames.length > 5 ? 5 : shortNames.length) * 70) + "," + 0 + ")");
+            .attr("transform", "translate(" + (width + margin.left - (lineNames.length > 5 ? 5 : lineNames.length) * 70) + "," + 0 + ")");
 
         body = svg.append("g")
             .attr("class", "body")

@@ -50,9 +50,10 @@ var Con = Backbone.Model.extend({
 });
 
 var Line = Backbone.Model.extend({
-    initialize: function(name, shortName, scoreArray) {
+    initialize: function(option, key, shortName, scoreArray) {
         this.attributes = {
-            name: name,
+            option: option,
+            key: key,
             shortName: shortName,
             scoreArray: scoreArray
         };
@@ -70,15 +71,17 @@ var LineSet = Backbone.Collection.extend({
         term_selected.forEach(function(term, index) {
             shortNames = simplify(conditions.get("option_1"), conditions.get("option_2"));
             var data_obj = data[conditions.get("category")];
-            var name = conditions.get("option_1") + "-" + term,
+            var option = conditions.get("option_1"),
+                key = term,
                 shortName = shortNames[0] + "-" + term.charAt(0),
                 scoreArray = data_obj.get([conditions.get("option_1")])[conditions.get("topic")][conditions.get("time_range")]["term_set"][term];
-            var line1 = new Line(name, shortName, scoreArray);
+            var line1 = new Line(option, key, shortName, scoreArray);
             self.add(line1);
-            name = conditions.get("option_2") + "-" + term;
+            option = conditions.get("option_1");
+            key = term;
             shortName = shortNames[1] + "-" + term.charAt(0);
             scoreArray = data_obj.get([conditions.get("option_2")])[conditions.get("topic")][conditions.get("time_range")]["term_set"][term];
-            var line2 = new Line(name, shortName, scoreArray);
+            var line2 = new Line(option, key, shortName, scoreArray);
             self.add(line2);
         });
         this.setTimeRange($("#line-time-range li").children().html().toLowerCase());
@@ -112,7 +115,8 @@ var Keywords = Backbone.Model.extend({
         this.clear;
         var time_range = conditions.get("time_range");
         var timed_obj = data[conditions.get("category")].attributes[conditions.get("option_" + "1")][conditions.get("topic")][time_range];
-        this.set("term_selected", Object.keys(timed_obj["term_set"]));
+        // this.set("term_selected", Object.keys(timed_obj["term_set"]));
+        this.set("term_selected", [Object.keys(timed_obj["term_set"])[0]]);
         this.set("begin_time", parseDate(timed_obj["begin_time"]));
         this.set("time_range", time_range);
         this.set("end_time", parseDate(data[conditions.get("category")].get("time")));
