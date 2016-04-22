@@ -58,13 +58,15 @@ var BarSetView = Backbone.View.extend({
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function(d, i) {
-                return "<strong>" + Object.keys(d)[1] + ": <br> </strong> <span style='color:" + color[0] + "'>" + d[Object.keys(d)[1]] + "</span>";
+                var value = d[Object.keys(d)[1]].toFixed(2);
+                return "<strong>" + Object.keys(d)[1] + ": <br> </strong> <span style='color:" + color[0] + "'>" + value + "</span>";
             })
         var tip2 = d3.tip()
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function(d, i) {
-                return "<strong>" + Object.keys(d)[2] + ": <br> </strong> <span style='color:" + color[1] + "'>" + d[Object.keys(d)[2]] + "</span>";
+                var value = d[Object.keys(d)[2]].toFixed(2);
+                return "<strong>" + Object.keys(d)[2] + ": <br> </strong> <span style='color:" + color[1] + "'>" + value + "</span>";
             })
 
         var svg = d3.select(".barchart-view")
