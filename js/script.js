@@ -9,6 +9,7 @@ var View = require('./views_yuesongli.js');
 var $ = require("jquery");
 window.$ = window.jQuery = $;
 var d3 = require('d3');
+var _ = require('underscore');
 require('../css/style.css');
 require('../css/xynoci.css');
 require('../css/barchart_style.css');
@@ -80,17 +81,20 @@ $(document).ready(function() {
 
         var keys = new model_t.Keywords();
         keys.loadNewKeys(conditions, data);
+        console.log(keys);
         var lineSet = new model_t.LineSet();
         lineSet.loadLines(conditions, data, keys);
         var lineView = new view_t.LineSetView({
             collection: lineSet
         });
+        lineView.render();
 
         conditions.on("change", function() {
             keys.loadNewKeys(conditions, data);
             lineSet.loadLines(conditions, data, keys);
-            console.log(lineSet);
+            lineView.render();
         });
+        $(window).resize(_.debounce(lineView.render(), 300));
 
         $("#line-time-range li").click(function() {
             var clicked = $(this).children().html().toLowerCase();
@@ -100,7 +104,10 @@ $(document).ready(function() {
                 $("#line-time-range #" + origin).removeClass("active");
                 $("#line-time-range #" + clicked).addClass("active");
             }
+            lineView.render();
+            console.log(lineSet);
         });
+
     });
 
     /*************** single element change ***************/
