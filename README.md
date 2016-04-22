@@ -9,7 +9,7 @@ What topics are people caring about during the election campaign? For a specific
 
 - With [npm](https://www.npmjs.com/) do:
 
-    ```
+    ```bash
     npm install
     ```
 
@@ -20,8 +20,15 @@ What topics are people caring about during the election campaign? For a specific
     ```
 
     or for development:
+
     ```
     webpack --process --color --watch
+    ```
+
+- To generate sample data, switch to `/data` do: 
+
+    ```bash
+    python generator.py
     ```
 
 ## Notes
