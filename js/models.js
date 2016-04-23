@@ -77,7 +77,7 @@ var LineSet = Backbone.Collection.extend({
                 scoreArray = data_obj.get([conditions.get("option_1")])[conditions.get("topic")][conditions.get("time_range")]["term_set"][term];
             var line1 = new Line(option, key, shortName, scoreArray);
             self.add(line1);
-            option = conditions.get("option_1");
+            option = conditions.get("option_2");
             key = term;
             shortName = shortNames[1] + "-" + term.charAt(0);
             scoreArray = data_obj.get([conditions.get("option_2")])[conditions.get("topic")][conditions.get("time_range")]["term_set"][term];

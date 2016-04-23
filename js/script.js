@@ -60,8 +60,11 @@ $(document).ready(function() {
         candidateJSON = data;
     });
     $.when(stateRequest, partyRequest, candidateRequest).done(function() {
-        $('#loading').css("display","none");
-        $('.container').css("display", "block");
+        // better experience when demo
+        $('#loading').delay(3000).fadeOut();
+        // $('#loading').fadeOut();
+        $(".container").fadeIn();
+
         state.attributes = stateJSON;
 
         party.attributes = partyJSON;
@@ -96,7 +99,6 @@ $(document).ready(function() {
             lineSet.loadLines(conditions, data, keys);
             lineView.render();
         });
-        $(window).resize(_.debounce(lineView.render(), 300));
 
         $("#line-time-range li").click(function() {
             var clicked = $(this).children().html().toLowerCase();
