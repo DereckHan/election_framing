@@ -325,7 +325,10 @@ var BarSetView = Backbone.View.extend({
         var key = keymodel.attributes.term_selected[0];
         console.log(keymodel);
         var selectKey = this.model.attributes["key"];
-        keymodel.attributes.term_selected[0] = selectKey;
+        var keyset = [];
+        keyset.push(selectKey);
+        //keymodel.attributes.term_selected[0] = selectKey;
+        keymodel.set({"term_selected": keyset});
         console.log(keymodel.attributes.term_selected[0]);
     },
     clear: function() {
