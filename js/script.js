@@ -61,9 +61,9 @@ $(document).ready(function() {
     });
     $.when(stateRequest, partyRequest, candidateRequest).done(function() {
         // better experience when demo
-        $('#loading').delay(3000).fadeOut();
+        // $('#loading').delay(1000).fadeOut();
         // $('#loading').fadeOut();
-        $(".container").fadeIn();
+        // $(".container").fadeIn();
 
         state.attributes = stateJSON;
 
@@ -99,6 +99,12 @@ $(document).ready(function() {
             lineSet.loadLines(conditions, data, keys);
             lineView.render();
         });
+        console.log(keys);
+
+        $(".xScale .tick").mouseover(lineView.modifyTips);
+        $(".xScale .tick").mouseout(lineView.recoverTips);
+        $("#line-chart").mouseenter(lineView.showTips);
+        $("#line-chart").mouseleave(lineView.removeTips);
 
         $("#line-time-range li").click(function() {
             var clicked = $(this).children().html().toLowerCase();
@@ -109,6 +115,9 @@ $(document).ready(function() {
                 $("#line-time-range #" + clicked).addClass("active");
             }
             lineView.render();
+            $(".xScale .tick").mouseover(lineView.modifyTips);
+            $("#line-chart").mouseenter(lineView.showTips);
+            $("#line-chart").mouseleave(lineView.removeTips);
             console.log(lineSet);
         });
 

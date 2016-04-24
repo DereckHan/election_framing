@@ -18,7 +18,7 @@ var LineSetView = Backbone.View.extend({
         };
 
         var start = this.collection.attributes["begin_time"],
-            end = this.collection.attributes["end_time"];
+            end = new Date(this.collection.attributes["end_time"] - (24 * 60 * 60 * 1000));
         var mobile_threshold = 718,
             graphic_aspect_width = 16,
             graphic_aspect_height = 9,
@@ -32,7 +32,7 @@ var LineSetView = Backbone.View.extend({
 
         var time_range = this.collection.attributes["time_range"];
 
-        if (width < mobile_threshold || time_range === "week") {
+        if (time_range === "week") {
             num_ticks_x = 8;
         }
 
@@ -95,26 +95,19 @@ var LineSetView = Backbone.View.extend({
             })
             .text("Sentimental Score: " + this.collection.models[0].get("key"));
 
-        d3.selectAll("g.xScale g.tick")
-            .append("line")
-            .classed("grid-line", true)
-            .attr("x1", 0)
-            .attr("y1", 0)
-            .attr("x2", 0)
-            .attr("y2", -height + margin.top);
-
-        d3.selectAll("g.yScale g.tick")
-            .append("line")
-            .classed("grid-line", true)
-            .attr("x1", 0)
-            .attr("y1", 0)
-            .attr("x2", width)
-            .attr("y2", 0);
-
         // add legend
         var legend = svg.append('g'),
             lineNames = this.collection.pluck("option"),
             shortNames = this.collection.pluck("shortName");
+
+        var legendRectSize = 12,
+            legendWordSize = 60,
+            legendSpacing = 2;
+
+        var unit = legendRectSize + legendWordSize + 2 * legendSpacing;
+
+        legend.attr("class", "legend")
+            .attr("transform", "translate(" + (width - (lineNames.length >= 5 ? 5 : lineNames.length) * unit) + "," + 0 + ")");
 
         legend.selectAll("text")
             .data(lineNames)
@@ -126,7 +119,7 @@ var LineSetView = Backbone.View.extend({
             .attr({
                 class: "legend",
                 x: function(d, i) {
-                    return (i % 5) * 70;
+                    return ((i % 5) * unit + legendRectSize + legendSpacing);
                 },
                 y: function(d, i) {
                     if (i > 4) return 25;
@@ -144,21 +137,19 @@ var LineSetView = Backbone.View.extend({
             .append("rect")
             .attr({
                 x: function(d, i) {
-                    return (i % 5) * 70 - 15;
+                    return ((i % 5) * unit);
                 },
                 y: function(d, i) {
                     if (i > 4) return 15;
                     return -5;
                 },
-                width: 12,
-                height: 12,
+                width: legendRectSize,
+                height: legendRectSize,
                 // fill: color
                 fill: function(d, i) {
                     return colors[i];
                 }
             });
-        legend.attr("class", "legend")
-            .attr("transform", "translate(" + (width + margin.left - (lineNames.length > 5 ? 5 : lineNames.length) * 70) + "," + 0 + ")");
 
         body = svg.append("g")
             .attr("class", "body")
@@ -207,11 +198,15 @@ var LineSetView = Backbone.View.extend({
 
             circle = svg.append("g")
                 .attr("class", "circle _" + i);
+
             circle.selectAll("circle._" + i)
                 .data(l)
                 .enter()
                 .append("circle")
-                .attr("class", "dot _" + i);
+                .attr("class", "dot _" + i)
+                .attr("value", function(d, i) {
+                    return i;
+                });
 
             circle.selectAll("circle._" + i)
                 .data(l)
@@ -236,7 +231,114 @@ var LineSetView = Backbone.View.extend({
                 .attr("r", 3.5);
         });
 
+        d3.selectAll("g.xScale g.tick")
+            .append("line")
+            .classed("grid-line", true)
+            .attr("x1", 0)
+            .attr("y1", 0)
+            .attr("x2", 0)
+            .attr("y2", -height + margin.top);
+
+        d3.selectAll("g.yScale g.tick")
+            .append("line")
+            .classed("grid-line", true)
+            .attr("x1", 0)
+            .attr("y1", 0)
+            .attr("x2", width)
+            .attr("y2", 0);
+
+        $(".xScale .tick").each(function(i) {
+            $($(".xScale .tick")[i]).attr("value", i);
+        });
+
+        // tip
+        var tip = svg.append("g")
+            .attr("class", "line-tip")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+        tip.append("rect")
+            .attr({
+                class: "bg",
+                width: 140,
+                height: 80,
+                rx: 2,
+                ry: 2
+            });
+        tip.append("text")
+            .attr({
+                class: "point-time",
+                x: 10,
+                y: 25
+            })
+            .text("hhhh");
+        lines.forEach(function(d, i) {
+            var tipItem = tip.append("g")
+                .attr("class", "tip-detail")
+                .attr("transform", "translate(10," + (30 + i * 22) + ")");
+            tipItem.append("g")
+                .attr("class", "bg")
+                .append("rect")
+                .attr({
+                    height: 20,
+                    width: 120
+                });
+
+            tipItem.append("rect")
+                .attr({
+                    x: 5,
+                    y: 5,
+                    height: legendRectSize,
+                    width: legendRectSize
+                })
+                .style("fill", colors[i]);
+
+            tipItem.append("text")
+                .attr({
+                    x: (5 + legendRectSize + 5),
+                    y: 16
+                })
+                .text(lineNames[i])
+                .style("fill", "#666");
+
+            tipItem.append("text")
+                .attr("class", "score _" + i)
+                .attr({
+                    x: (5 + legendRectSize + 5 + legendWordSize + 10),
+                    y: 16
+                })
+                .style("fill", "#666");
+        })
+
+        svg.append("defs")
+            .append("clipPath")
+            .attr("id", "body-clip")
+            .append("rect")
+            .attr("id", "play-ground")
+            .attr("x", 0)
+            .attr("y", margin.top)
+            .attr("width", width)
+            .attr("height", height - margin.bottom);
+
+    },
+    modifyTips: function() {
+        var id = $("g .circle").attr("value");
+        $("circle[value=" + id + "]").each(function() {
+            $(this).attr("r", 6);
+        });
+        console.log(this);
+    },
+    // recoverTips: function() {
+    //     var id = $("g .circle").attr("value");
+    //     $("circle[value=" + id + "]").each(function() {
+    //         $(this).attr("r", 3.5);
+    //     });
+    // },
+    showTips: function() {
+        $(".line-tip").fadeIn();
+    },
+    removeTips: function() {
+        $(".line-tip").fadeOut();
     }
+
 
 });
 

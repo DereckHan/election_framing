@@ -189,16 +189,16 @@ var BarSetView = Backbone.View.extend({
             .on('mouseout', tip2.hide);
 
         // Draw legend
-        var legendRectSize = 18,
-            legendWordSize = 45,
-            legendSpacing = 4;
+        var legendRectSize = 12,
+            legendWordSize = 60,
+            legendSpacing = 2;
 
         var legend = bars.append("g")
             .attr("class", "legend")
             .data(comparisons)
             .attr('transform', function(d, i) {
                 var legend_height = legendRectSize + legendSpacing;
-                var legend_width = (legendRectSize + legendWordSize) * 2;
+                var legend_width = legendRectSize + legendWordSize;
                 var horz = width + (i - 2) * (legend_width + legendSpacing * 2);
                 //var vert = i * height - offset;
                 return 'translate(' + horz + ',' + -(legendRectSize * 2) + ')';
