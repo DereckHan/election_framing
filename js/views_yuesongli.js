@@ -52,21 +52,27 @@ var BarSetView = Backbone.View.extend({
         // create left yAxis
         var yAxisLeft = d3.svg.axis().scale(y).ticks(4).orient("left");
         // tip
-        var tip = d3.tip()
+        var tip1 = d3.tip()
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function(d, i) {
+                model.attributes["key"] = d.keyword;
                 //console.log(i);
-                var value = d[Object.keys(d)[i + 1]].toFixed(2);
-                return "<strong> <span style='color:" + color[i] + "'>" + Object.keys(d)[i + 1] + ": <br> </strong>" + value + "</span>";
+                var value = d[Object.keys(d)[1]].toFixed(2);
+                return "<strong> <span style='color:" + color[0] + "'>" + Object.keys(d)[1] + ": <br> </strong>" + value + "</span>";
             });
-        /*var tip2 = d3.tip()
+        var tip2 = d3.tip()
             .attr('class', 'd3-tip')
             .offset([-10, 0])
-            .html(function(d, i) {
+            .html(function(d) {
+                model.attributes["key"] = d.keyword;
                 var value = d[Object.keys(d)[2]].toFixed(2);
                 return "<strong> <span style='color:" + color[1] + "'>" + Object.keys(d)[2] + ": <br> </strong>" + value + "</span>";
-            })*/
+            });
+        /*var tooltip = d3.select("body")
+            .append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0.0);*/
 
         //$("#bar-chart").html(_.template($("#barChartViewTemplate").html()));
         //$("#bar-chart").append("<svg class='barchart-view'></svg>");
@@ -78,7 +84,8 @@ var BarSetView = Backbone.View.extend({
             .attr("class", "graph")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
         //svg.selectAll(".bar").remove();
-        svg.call(tip);
+        svg.call(tip1);
+        svg.call(tip2);
 
         //d3.json(model.get("data"), function(data) {
         // if (att["category"] == "Parties") {
@@ -164,15 +171,29 @@ var BarSetView = Backbone.View.extend({
                     //return y(d[att["option_1"]]);
                 }
             })
-            .on('mouseover', function(d) {
+            /*.on('mouseover', function(d) {
                 model.set({
                     "key": d.keyword
                 });
                 tip.show(d, 0);
                 return (d.keyword);
+            })*/
+            .on("mouseover", tip1.show)
+            .on('mouseout', tip1.hide);
+            /*.on("mouseover", function(d) {
+                model.set({
+                    "key": d.keyword
+                });
+                var value = d[Object.keys(d)[1]].toFixed(2);
+                var key = Object.keys(d)[1];
+                console.log(d);
+                tooltip.html(key + "<br />" + value)
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY + 20) + "px")
+                    .style("opacity", 1.0);
+                tooltip.style("left", (d3.event.pageX) + "px");
             })
-            //.on("mouseover", tip.show)
-            .on('mouseout', tip.hide);
+            .on("mouseleave", function() { tooltip.html(" ").style("display", "none"); });*/
 
         bars.append("rect")
             .attr("class", "bar2")
@@ -192,12 +213,27 @@ var BarSetView = Backbone.View.extend({
                 else
                     return (height / 2 - y(-d[att["option_2"]]));
             })
-            .on('mouseover', function(d) {
+            /*.on('mouseover', function(d) {
                 model.set({ "key": d.keyword });
-                tip.show(d, 1);
+                tip.show(d);
                 return (d.keyword);
+            })*/
+            .on('mouseover', tip2.show)
+            .on('mouseout', tip2.hide);
+            /*.on("mouseover", function(d) {
+                model.set({
+                    "key": d.keyword
+                });
+                var value = d[Object.keys(d)[2]].toFixed(2);
+                var key = Object.keys(d)[2];
+                console.log(d);
+                tooltip.html(key + "<br />" + value)
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY + 20) + "px")
+                    .style("opacity", 1.0);
+                tooltip.style("left", (d3.event.pageX) + "px");
             })
-            .on('mouseout', tip.hide);
+            .on("mouseleave", function() { tooltip.style("opacity", 0.0); });*/
 
         // Draw legend
         var legendRectSize = 18,
