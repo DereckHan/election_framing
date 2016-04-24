@@ -76,17 +76,16 @@ $(document).ready(function() {
             "Parties": party
         };
 
-        var con = new model_t.Con(data);
+        var keys = new model_t.Keywords();
+        keys.loadNewKeys(conditions, data);
+        console.log(keys);
+        var con = new model_t.Con(data, keys);
         var bar = new View.BarSetView({
             model: con
         });
         bar.render(con);
         bar.listenTo(con, "change", bar.clear);
         bar.listenTo(con, "change", bar.render);
-
-        var keys = new model_t.Keywords();
-        keys.loadNewKeys(conditions, data);
-        console.log(keys);
         var lineSet = new model_t.LineSet();
         lineSet.loadLines(conditions, data, keys);
         var lineView = new view_t.LineSetView({

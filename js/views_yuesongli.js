@@ -17,13 +17,11 @@ var BarSetView = Backbone.View.extend({
         "change #option-1-select": "getOption1",
         "change #option-2-select": "getOption2",
         "click #bar-time-range li": "getTime",
+        "click .bar1": "getKeyword",
+        "click .bar2": "getKeyword",
     },
     initialize: function() {
         //this.$el.html(this.template(this.model.attributes));
-    },
-    /*constructor: function(data) {
-        console.log(this.model);
-        model.set("data", data);
     },
     /*show: function(model) {
       alert(model.get("data"));
@@ -54,21 +52,24 @@ var BarSetView = Backbone.View.extend({
         // create left yAxis
         var yAxisLeft = d3.svg.axis().scale(y).ticks(4).orient("left");
         // tip
-        var tip1 = d3.tip()
+        var tip = d3.tip()
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function(d, i) {
-                var value = d[Object.keys(d)[1]].toFixed(2);
-                return "<strong> <span style='color:" + color[0] + "'>"  + Object.keys(d)[1] + ": <br> </strong>" + value + "</span>";
-            })
-        var tip2 = d3.tip()
+                //console.log(i);
+                var value = d[Object.keys(d)[i + 1]].toFixed(2);
+                return "<strong> <span style='color:" + color[i] + "'>" + Object.keys(d)[i + 1] + ": <br> </strong>" + value + "</span>";
+            });
+        /*var tip2 = d3.tip()
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function(d, i) {
                 var value = d[Object.keys(d)[2]].toFixed(2);
                 return "<strong> <span style='color:" + color[1] + "'>" + Object.keys(d)[2] + ": <br> </strong>" + value + "</span>";
-            })
+            })*/
 
+        //$("#bar-chart").html(_.template($("#barChartViewTemplate").html()));
+        //$("#bar-chart").append("<svg class='barchart-view'></svg>");
         var svg = d3.select(".barchart-view")
             .attr("preserveAspectRatio", "xMinYMin meet")
             .attr("viewBox", "0 0 620 290")
@@ -77,8 +78,7 @@ var BarSetView = Backbone.View.extend({
             .attr("class", "graph")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
         //svg.selectAll(".bar").remove();
-        svg.call(tip1);
-        svg.call(tip2);
+        svg.call(tip);
 
         //d3.json(model.get("data"), function(data) {
         // if (att["category"] == "Parties") {
@@ -164,8 +164,15 @@ var BarSetView = Backbone.View.extend({
                     //return y(d[att["option_1"]]);
                 }
             })
-            .on('mouseover', tip1.show)
-            .on('mouseout', tip1.hide);
+            .on('mouseover', function(d) {
+                model.set({
+                    "key": d.keyword
+                });
+                tip.show(d, 0);
+                return (d.keyword);
+            })
+            //.on("mouseover", tip.show)
+            .on('mouseout', tip.hide);
 
         bars.append("rect")
             .attr("class", "bar2")
@@ -185,8 +192,12 @@ var BarSetView = Backbone.View.extend({
                 else
                     return (height / 2 - y(-d[att["option_2"]]));
             })
-            .on('mouseover', tip2.show)
-            .on('mouseout', tip2.hide);
+            .on('mouseover', function(d) {
+                model.set({ "key": d.keyword });
+                tip.show(d, 1);
+                return (d.keyword);
+            })
+            .on('mouseout', tip.hide);
 
         // Draw legend
         var legendRectSize = 18,
@@ -244,8 +255,7 @@ var BarSetView = Backbone.View.extend({
                 "option_1": "Hillary Clinton",
                 "option_2": "Bernie Sanders"
             });
-        }
-        else {
+        } else {
             this.model.set({
                 "category": selectCategory,
                 "option_1": "Alabama",
@@ -273,6 +283,14 @@ var BarSetView = Backbone.View.extend({
         this.model.set({
             "time_range": selectTime
         });
+    },
+    getKeyword: function(event) {
+        var keymodel = this.model.attributes["keys"];
+        var key = keymodel.attributes.term_selected[0];
+        console.log(keymodel);
+        var selectKey = this.model.attributes["key"];
+        keymodel.attributes.term_selected[0] = selectKey;
+        console.log(keymodel.attributes.term_selected[0]);
     },
     clear: function() {
         this.model.destroy();
