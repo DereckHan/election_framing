@@ -12,6 +12,7 @@ body {
     stroke: #000;
     shape-rendering: crispEdges;
 }
+
 .axis text {
     fill: steelblue;
     font-size: 11px;
@@ -97,3 +98,20 @@ body {
     top: 100%;
     left: 0;
 }
+
+/*.tooltip{
+    position: absolute;
+    z-index: 9900000;
+    opacity: 1;
+    height: auto;
+    font-size: 10px;
+    filter: alpha(opacity=100);
+    padding: 5px;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 5px;
+    -moz-border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    border-radius: 5px 5px 5px 5px;
+    background-color: white;
+}*/

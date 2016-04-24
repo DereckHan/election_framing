@@ -37,15 +37,17 @@ var Con = Backbone.Model.extend({
         option_1: "Alabama",
         option_2: "Alaska",
         time_range: "day",
-        data: Object()
+        data: Object(),
+        key: "",
     },
-    initialize: function(data) {
+    initialize: function(data, keys) {
         this.set("option_1", $("div#option-1 select").val());
         this.set("option_2", $("div#option-2 select").val());
         this.set("topic", $("div#topic label").attr("id"));
         this.set("category", $("div#category select").val());
         this.set("time_range", $(".nav.nav-tabs.nav-justified li.active a").html().toLowerCase());
         this.set("data", data);
+        this.set("keys", keys);
     }
 });
 
