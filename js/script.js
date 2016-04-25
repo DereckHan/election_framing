@@ -61,9 +61,9 @@ $(document).ready(function() {
     });
     $.when(stateRequest, partyRequest, candidateRequest).done(function() {
         // better experience when demo
-        // $('#loading').delay(1000).fadeOut();
+        $('#loading').delay(1000).fadeOut();
         // $('#loading').fadeOut();
-        // $(".container").fadeIn();
+        $(".container").fadeIn();
 
         state.attributes = stateJSON;
 
@@ -92,18 +92,22 @@ $(document).ready(function() {
             collection: lineSet
         });
         lineView.render();
+        bindLineEvent(lineView);
 
         conditions.on("change", function() {
             keys.loadNewKeys(conditions, data);
             lineSet.loadLines(conditions, data, keys);
+            lineSet.setTimeRange($("#line-time-range .active").children().html().toLowerCase());
             lineView.render();
+            bindLineEvent(lineView);
+        });
+
+        keys.on("change", function() {
+            lineSet.loadLines(conditions, data, keys);
+            lineView.render();
+            bindLineEvent(lineView);
         });
         console.log(keys);
-
-        $(".xScale .tick").mouseover(lineView.modifyTips);
-        $(".xScale .tick").mouseout(lineView.recoverTips);
-        $("#line-chart").mouseenter(lineView.showTips);
-        $("#line-chart").mouseleave(lineView.removeTips);
 
         $("#line-time-range li").click(function() {
             var clicked = $(this).children().html().toLowerCase();
@@ -114,9 +118,8 @@ $(document).ready(function() {
                 $("#line-time-range #" + clicked).addClass("active");
             }
             lineView.render();
-            $(".xScale .tick").mouseover(lineView.modifyTips);
-            $("#line-chart").mouseenter(lineView.showTips);
-            $("#line-chart").mouseleave(lineView.removeTips);
+            bindLineEvent(lineView);
+
             console.log(lineSet);
         });
 
@@ -183,6 +186,15 @@ $(document).ready(function() {
     });
 
 });
+
+function bindLineEvent(lineView) {
+
+    $(".xScale .tick").mouseover(lineView.modifyTips);
+    $(".xScale .tick").mouseout(lineView.recoverTips);
+    $("#line-chart").delay(1000).mouseenter(lineView.showTips);
+    $("#line-chart").mouseleave(lineView.removeTips);
+    $(".line-tip").fadeOut();
+}
 
 function addOption(data) {
     for (var i = 0; i < data.length; i++) {

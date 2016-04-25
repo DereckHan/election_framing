@@ -204,8 +204,11 @@ var LineSetView = Backbone.View.extend({
                 .enter()
                 .append("circle")
                 .attr("class", "dot _" + i)
-                .attr("value", function(d, i) {
+                .attr("index", function(d, i) {
                     return i;
+                })
+                .attr("value", function(d) {
+                    return d.sentiment;
                 });
 
             circle.selectAll("circle._" + i)
@@ -248,7 +251,7 @@ var LineSetView = Backbone.View.extend({
             .attr("y2", 0);
 
         $(".xScale .tick").each(function(i) {
-            $($(".xScale .tick")[i]).attr("value", i);
+            $($(".xScale .tick")[i]).attr("index", i);
         });
 
         // tip
@@ -268,8 +271,7 @@ var LineSetView = Backbone.View.extend({
                 class: "point-time",
                 x: 10,
                 y: 25
-            })
-            .text("hhhh");
+            });
         lines.forEach(function(d, i) {
             var tipItem = tip.append("g")
                 .attr("class", "tip-detail")
@@ -302,7 +304,7 @@ var LineSetView = Backbone.View.extend({
             tipItem.append("text")
                 .attr("class", "score _" + i)
                 .attr({
-                    x: (5 + legendRectSize + 5 + legendWordSize + 10),
+                    x: (5 + legendRectSize + 5 + legendWordSize + 5),
                     y: 16
                 })
                 .style("fill", "#666");
@@ -317,21 +319,26 @@ var LineSetView = Backbone.View.extend({
             .attr("y", margin.top)
             .attr("width", width)
             .attr("height", height - margin.bottom);
-
     },
     modifyTips: function() {
-        var id = $("g .circle").attr("value");
-        $("circle[value=" + id + "]").each(function() {
+        var id = $(this).attr("index"),
+            scores = [];
+        $("circle[index=" + id + "]").each(function() {
             $(this).attr("r", 6);
+            scores.push($(this).attr("value"));
         });
-        console.log(this);
+        $(".point-time").html($(this).children("text").html());
+        $(".tip-detail .score").each(function(i) {
+            var len = (scores[i].charAt(0) === "-") ? 5 : 4;
+            $(this).html(scores[i].substr(0, len));
+        });
     },
-    // recoverTips: function() {
-    //     var id = $("g .circle").attr("value");
-    //     $("circle[value=" + id + "]").each(function() {
-    //         $(this).attr("r", 3.5);
-    //     });
-    // },
+    recoverTips: function() {
+        var id = $(this).attr("index");
+        $("circle[index=" + id + "]").delay(1000).each(function() {
+            $(this).attr("r", 3.5);
+        });
+    },
     showTips: function() {
         $(".line-tip").fadeIn();
     },
