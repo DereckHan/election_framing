@@ -1,14 +1,6 @@
-/*************** temporary ***************/
-// view_t -> View
-// model_t -> Model
-var view_t = require('./views.js');
-var model_t = require('./models.js');
-var View = require('./views_yuesongli.js');
-
-/*************** Js ***************/
 require('../css/style.css');
-require('../css/xynoci.css');
-require('../css/barchart_style.css');
+var View = require('./views.js');
+var Model = require('./models.js');
 var $ = require("jquery");
 window.$ = window.jQuery = $;
 var d3 = require('d3');
@@ -36,16 +28,16 @@ var states_base = ["Alabama", "Alaska", "Arizona", "Arkansas", "California",
     ],
     parties_base = ["Democratic", "Republican"];
 
-var state = new model_t.State();
-var party = new model_t.Party();
-var candidate = new model_t.Candidate();
+var state = new Model.State();
+var party = new Model.Party();
+var candidate = new Model.Candidate();
 
 $(document).ready(function() {
     /*************** load DOMs ***************/
     addOption(states_base);
 
     /*************** main content ***************/
-    var conditions = new model_t.Conditions();
+    var conditions = new Model.Conditions();
 
     var stateRequest = $.get(state.url);
     var partyRequest = $.get(party.url);
@@ -76,19 +68,19 @@ $(document).ready(function() {
             "Parties": party
         };
 
-        var keys = new model_t.Keywords();
+        var keys = new Model.Keywords();
         keys.loadNewKeys(conditions, data);
-        console.log(keys);
-        var con = new model_t.Con(data, keys);
+        // console.log(keys);
+        var con = new Model.Con(data, keys);
         var bar = new View.BarSetView({
             model: con
         });
         bar.render(con);
         bar.listenTo(con, "change", bar.clear);
         bar.listenTo(con, "change", bar.render);
-        var lineSet = new model_t.LineSet();
+        var lineSet = new Model.LineSet();
         lineSet.loadLines(conditions, data, keys);
-        var lineView = new view_t.LineSetView({
+        var lineView = new View.LineSetView({
             collection: lineSet
         });
         lineView.render();
@@ -107,7 +99,7 @@ $(document).ready(function() {
             lineView.render();
             bindLineEvent(lineView);
         });
-        console.log(keys);
+        // console.log(keys);
 
         $("#line-time-range li").click(function() {
             var clicked = $(this).children().html().toLowerCase();
@@ -119,8 +111,7 @@ $(document).ready(function() {
             }
             lineView.render();
             bindLineEvent(lineView);
-
-            console.log(lineSet);
+            // console.log(lineSet);
         });
 
     });
@@ -157,6 +148,7 @@ $(document).ready(function() {
         });
         conditions.set("option_2", $("div#option-2 select").val());
     });
+
     $("div#option-1 select").change(function() {
         var option1 = $(this).val();
         $("div#option-2 option").prop('disabled', false);
@@ -164,6 +156,7 @@ $(document).ready(function() {
         $("div#option-2 select").selectpicker('refresh');
         conditions.set("option_1", $(this).val());
     });
+
     $("div#option-2 select").change(function() {
         var option2 = $(this).val();
         $("div#option-1 option").prop('disabled', false);
@@ -171,6 +164,7 @@ $(document).ready(function() {
         $("div#option-1 select").selectpicker('refresh');
         conditions.set("option_2", $(this).val());
     });
+
     $("div#topic label").click(function() {
         conditions.set("topic", $(this).attr("id"));
     });
@@ -188,7 +182,6 @@ $(document).ready(function() {
 });
 
 function bindLineEvent(lineView) {
-
     $(".xScale .tick").mouseover(lineView.modifyTips);
     $(".xScale .tick").mouseout(lineView.recoverTips);
     $("#line-chart").delay(1000).mouseenter(lineView.showTips);
