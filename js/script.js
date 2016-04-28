@@ -96,6 +96,7 @@ $(document).ready(function() {
 
         keys.on("change", function() {
             lineSet.loadLines(conditions, data, keys);
+            lineSet.setTimeRange($("#line-time-range .active").children().html().toLowerCase());
             lineView.render();
             bindLineEvent(lineView);
         });
@@ -183,10 +184,7 @@ $(document).ready(function() {
 
 function bindLineEvent(lineView) {
     $(".xScale .tick").mouseover(lineView.modifyTips);
-    $(".xScale .tick").mouseout(lineView.recoverTips);
-    $("#line-chart").delay(1000).mouseenter(lineView.showTips);
     $("#line-chart").mouseleave(lineView.removeTips);
-    $(".line-tip").fadeOut();
 }
 
 function addOption(data) {

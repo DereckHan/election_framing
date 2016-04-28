@@ -22,11 +22,7 @@
     transform: translate(-50%, -50%);
 }
 
-#loading p {
-    font-size: 25px;
-    text-align: center;
-    font-weight: 400;
-    line-height: 2em;
+#loading h1 {
     color: #333;
     position: absolute;
     bottom: 10%;

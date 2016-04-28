@@ -127,7 +127,7 @@ var LineSetView = Backbone.View.extend({
             .style('fill', function(d, i) {
                 return colors[i];
             })
-            .style('stroke', function() {
+            .style('stroke', function(d, i) {
                 return colors[i];
             })
         legend.append('text')
@@ -238,27 +238,36 @@ var LineSetView = Backbone.View.extend({
             .attr("y2", 0);
 
         $(".xScale .tick").each(function(i) {
-            $($(".xScale .tick")[i]).attr("index", i);
+            $($(".xScale .tick")[i])
+                .attr("index", i)
+                .attr("total", lines[0].length);
         });
 
         // tip
+        var maxLength = lineNames[0].length > lineNames[1].length ? lineNames[0].length : lineNames[1].length;
+        var legendLength = maxLength * 6;
+        var holderLength = legendRectSize + 10 + legendLength + 20 + 30 + 5;
         var tip = svg.append("g")
             .attr("class", "line-tip")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+            .style("display", "none");
+
         tip.append("rect")
             .attr({
                 class: "bg",
-                width: 140,
+                width: holderLength + 20,
                 height: 80,
                 rx: 2,
                 ry: 2
             });
+
         tip.append("text")
             .attr({
                 class: "point-time",
                 x: 10,
                 y: 25
             });
+
         lines.forEach(function(d, i) {
             var tipItem = tip.append("g")
                 .attr("class", "tip-detail")
@@ -268,7 +277,7 @@ var LineSetView = Backbone.View.extend({
                 .append("rect")
                 .attr({
                     height: 20,
-                    width: 120
+                    width: holderLength,
                 });
 
             tipItem.append("rect")
@@ -288,13 +297,13 @@ var LineSetView = Backbone.View.extend({
                 .text(lineNames[i])
                 .style("fill", "#666");
 
-            // tipItem.append("text")
-            //     .attr("class", "score _" + i)
-            //     .attr({
-            //         x: (5 + legendRectSize + 5 + legendWordSize + 5),
-            //         y: 16
-            //     })
-            //     .style("fill", "#666");
+            tipItem.append("text")
+                .attr("class", "score _" + i)
+                .attr({
+                    x: (5 + legendRectSize + 5 + legendLength + 20),
+                    y: 16
+                })
+                .style("fill", "#666");
         })
 
         svg.append("defs")
@@ -310,6 +319,22 @@ var LineSetView = Backbone.View.extend({
     modifyTips: function() {
         var id = $(this).attr("index"),
             scores = [];
+        var containerWidth = $(".linechart-view").width(),
+            width = parseInt($(".line-tip .bg").attr("width")) + 20;
+        var left = 30,
+            right = 25,
+            top = 25;
+        if (id / $(this).attr("total") < 0.5) {
+            d3.select(".line-tip").attr("transform", "translate(" + (containerWidth - right - width - left) + "," + top + ")");
+        } else {
+            d3.select(".line-tip").attr("transform", "translate(" + (left) + "," + top + ")")
+        }
+        if ($(".line-tip").css("display") === "none") {
+            $(".line-tip").fadeIn();
+        }
+        $("circle").each(function() {
+            $(this).attr("r", 3.5);
+        });
         $("circle[index=" + id + "]").each(function() {
             $(this).attr("r", 6);
             scores.push($(this).attr("value"));
@@ -317,20 +342,14 @@ var LineSetView = Backbone.View.extend({
         $(".point-time").html($(this).children("text").html());
         $(".tip-detail .score").each(function(i) {
             var len = (scores[i].charAt(0) === "-") ? 5 : 4;
-            $(this).html(scores[i].substr(0, len));
+            $(this).html(len == 4 ? ("&nbsp" + scores[i].substr(0, len)) : scores[i].substr(0, len));
         });
-    },
-    recoverTips: function() {
-        var id = $(this).attr("index");
-        $("circle[index=" + id + "]").delay(1000).each(function() {
-            $(this).attr("r", 3.5);
-        });
-    },
-    showTips: function() {
-        $(".line-tip").fadeIn();
     },
     removeTips: function() {
         $(".line-tip").fadeOut();
+        $("circle").each(function() {
+            $(this).attr("r", 3.5);
+        });
     }
 
 });
