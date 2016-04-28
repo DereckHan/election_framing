@@ -95,60 +95,48 @@ var LineSetView = Backbone.View.extend({
             .text("Sentimental Score: " + this.collection.models[0].get("key"));
 
         // add legend
-        var legend = svg.append('g'),
-            lineNames = this.collection.pluck("option"),
-            shortNames = this.collection.pluck("shortName");
 
         var legendRectSize = 12,
-            legendWordSize = 60,
-            legendSpacing = 2;
+            legendCharLength = 2,
+            legendSpacing = 2,
+            endBuffer = 10;
 
-        var unit = legendRectSize + legendWordSize + 2 * legendSpacing;
+        var lineNames = this.collection.pluck("option"),
+            shortNames = this.collection.pluck("shortName");
 
-        legend.attr("class", "legend")
-            .attr("transform", "translate(" + (width - (lineNames.length >= 5 ? 5 : lineNames.length) * unit) + "," + 0 + ")");
+        var legendG = svg.append('g')
+            .attr("class", "legend");
 
-        legend.selectAll("text")
+        var legend = legendG.selectAll(".legend _" + i)
             .data(lineNames)
             .enter()
-            .append("text")
-            .text(function(d) {
-                return d;
+            .append("g")
+            .attr('transform', function(d, i) {
+                var shiftUnits = 0;
+                for (j = 1; j >= i; j--) {
+                    shiftUnits += lineNames[j].length;
+                }
+                var legend_height = legendRectSize + legendSpacing;
+                var legend_width = legendRectSize + shiftUnits * legendCharLength + endBuffer;
+                var horz = width + (i - 2) * (legend_width + legendSpacing * 2) - margin.right;
+                return 'translate(' + horz + ',0)';
             })
-            .attr({
-                class: "legend",
-                x: function(d, i) {
-                    return ((i % 5) * unit + legendRectSize + legendSpacing);
-                },
-                y: function(d, i) {
-                    if (i > 4) return 25;
-                    return 5;
-                },
-                // fill: color
-                fill: function(d, i) {
-                    return colors[i];
-                }
+        legend.append('rect')
+            .attr('width', legendRectSize)
+            .attr('height', legendRectSize)
+            .style('fill', function(d, i) {
+                return colors[i];
+            })
+            .style('stroke', function() {
+                return colors[i];
+            })
+        legend.append('text')
+            .attr('x', legendRectSize + legendSpacing)
+            .attr('y', legendRectSize - legendSpacing)
+            .text(function(d, i) {
+                return lineNames[i];
             });
 
-        legend.selectAll("rect")
-            .data(lineNames)
-            .enter()
-            .append("rect")
-            .attr({
-                x: function(d, i) {
-                    return ((i % 5) * unit);
-                },
-                y: function(d, i) {
-                    if (i > 4) return 15;
-                    return -5;
-                },
-                width: legendRectSize,
-                height: legendRectSize,
-                // fill: color
-                fill: function(d, i) {
-                    return colors[i];
-                }
-            });
 
         body = svg.append("g")
             .attr("class", "body")
@@ -300,13 +288,13 @@ var LineSetView = Backbone.View.extend({
                 .text(lineNames[i])
                 .style("fill", "#666");
 
-            tipItem.append("text")
-                .attr("class", "score _" + i)
-                .attr({
-                    x: (5 + legendRectSize + 5 + legendWordSize + 5),
-                    y: 16
-                })
-                .style("fill", "#666");
+            // tipItem.append("text")
+            //     .attr("class", "score _" + i)
+            //     .attr({
+            //         x: (5 + legendRectSize + 5 + legendWordSize + 5),
+            //         y: 16
+            //     })
+            //     .style("fill", "#666");
         })
 
         svg.append("defs")
@@ -387,7 +375,7 @@ var BarSetView = Backbone.View.extend({
             .orient("bottom");
         // create left yAxis
         var yAxisLeft = d3.svg.axis().scale(y).ticks(4).orient("left");
-        
+
         // tip
         var tip1 = d3.tip()
             .attr('class', 'd3-tip')
@@ -510,16 +498,20 @@ var BarSetView = Backbone.View.extend({
 
         // Draw legend
         var legendRectSize = 12,
-            legendWordSize = 60,
+            legendCharLength = 2,
             legendSpacing = 2;
 
         var legend = bars.append("g")
             .attr("class", "legend")
             .data(comparisons)
             .attr('transform', function(d, i) {
+                var shiftUnits = 0;
+                for (j = 1; j >= i; j--) {
+                    shiftUnits += comparisons[j].length;
+                }
                 var legend_height = legendRectSize + legendSpacing;
-                var legend_width = legendRectSize + legendWordSize;
-                var horz = width + (i - 2) * (legend_width + legendSpacing * 2);
+                var legend_width = legendRectSize + shiftUnits * legendCharLength + legendSpacing * 4;
+                var horz = width + (i - 2) * (legend_width + legendSpacing * 2) - 25;
                 return 'translate(' + horz + ',' + -(legendRectSize * 2) + ')';
             });
 
@@ -534,7 +526,6 @@ var BarSetView = Backbone.View.extend({
             });
 
         legend.append('text')
-            .attr('class', 'legend')
             .attr('x', legendRectSize + legendSpacing)
             .attr('y', legendRectSize - legendSpacing)
             .text(function(d, i) {
@@ -593,7 +584,9 @@ var BarSetView = Backbone.View.extend({
         var selectKey = this.model.attributes["key"];
         var keyset = [];
         keyset.push(selectKey);
-        keymodel.set({"term_selected": keyset});
+        keymodel.set({
+            "term_selected": keyset
+        });
     },
     clear: function() {
         this.model.destroy();
