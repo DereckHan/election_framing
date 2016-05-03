@@ -70,7 +70,6 @@ $(document).ready(function() {
 
         var keys = new Model.Keywords();
         keys.loadNewKeys(conditions, data);
-        // console.log(keys);
         var con = new Model.Con(data, keys);
         var bar = new View.BarSetView({
             model: con
@@ -88,10 +87,7 @@ $(document).ready(function() {
 
         conditions.on("change", function() {
             keys.loadNewKeys(conditions, data);
-            lineSet.loadLines(conditions, data, keys);
-            lineSet.setTimeRange($("#line-time-range .active").children().html().toLowerCase());
-            lineView.render();
-            bindLineEvent(lineView);
+            keys.trigger("change");
         });
 
         keys.on("change", function() {
@@ -100,7 +96,6 @@ $(document).ready(function() {
             lineView.render();
             bindLineEvent(lineView);
         });
-        // console.log(keys);
 
         $("#line-time-range li").click(function() {
             var clicked = $(this).children().html().toLowerCase();
@@ -112,7 +107,6 @@ $(document).ready(function() {
             }
             lineView.render();
             bindLineEvent(lineView);
-            // console.log(lineSet);
         });
 
     });
@@ -147,7 +141,10 @@ $(document).ready(function() {
         conditions.set("option_1", $("div#option-1 select").val(), {
             silent: true
         });
-        conditions.set("option_2", $("div#option-2 select").val());
+        conditions.set("option_2", $("div#option-2 select").val(), {
+            silent: true
+        });
+        conditions.trigger("change");
     });
 
     $("div#option-1 select").change(function() {

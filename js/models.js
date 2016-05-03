@@ -12,7 +12,10 @@ var root_url = "../",
 
 /*************** 
  * Models 
- ***************/
+ ***************
+ *
+ * basic query conditions containing selected DOM elements
+ */
 var Conditions = Backbone.Model.extend({
     defaults: {
         topic: "eco",
@@ -30,6 +33,9 @@ var Conditions = Backbone.Model.extend({
     }
 });
 
+/* 
+ * data object used by barView, built on 4 Models: State, Party, Candidate and Keywords
+ */
 var Con = Backbone.Model.extend({
     defaults: {
         topic: "eco",
@@ -51,6 +57,10 @@ var Con = Backbone.Model.extend({
     }
 });
 
+/* 
+ * Line is used to construct LineSet, containing the keyword and option to which Line relevant and the 
+ * scoreArray by which it is constructed
+ */
 var Line = Backbone.Model.extend({
     initialize: function(option, key, shortName, scoreArray) {
         this.attributes = {
@@ -62,6 +72,13 @@ var Line = Backbone.Model.extend({
     }
 });
 
+/* 
+ * LineSet is a Collection containing Lines that are going to be displayed in line chart.
+ * It contains:
+ * 1) time_range during which lines are going to be displayed, determined by #line-time-range
+ * 2) exact begin_time and end_time determined by data from server
+ * 3) line models 
+ */
 var LineSet = Backbone.Collection.extend({
     model: Line,
     loadLines: function(conditions, data, keys) {
@@ -110,10 +127,19 @@ var LineSet = Backbone.Collection.extend({
     }
 });
 
+/*
+ * term_selected within time_range from begin_time to end_time. 
+ *
+ * note:
+ *   time_range, begin_time, and end_time here, determined by #bar-time-range, are different from 
+ *      what in LineSet.
+ *   In here, they constrain time range during which keywords are generated, while in LineSet they,
+ *      as subset of what in here, constrain how long is the time period during which lines are
+ *      displayed.
+ */
 var Keywords = Backbone.Model.extend({
     initialize: function() {},
     loadNewKeys: function(conditions, data) {
-        // term_selected within time_range from begin_time to end_time.        
         this.clear;
         var time_range = conditions.get("time_range");
         var timed_obj = data[conditions.get("category")].attributes[conditions.get("option_" + "1")][conditions.get("topic")][time_range];
@@ -125,6 +151,9 @@ var Keywords = Backbone.Model.extend({
     }
 });
 
+/*
+ * Data object returned from server.
+ */
 var State = Backbone.Model.extend({
     url: root_url + state_file_path
 });
@@ -142,6 +171,8 @@ function parseDate(time) {
     return new Date(parts[2], parts[0] - 1, parts[1]);
 };
 
+// @deprecated
+// To shorten string then build shortName, which is used to optimize the display of long Options in legends.
 function simplify(name1, name2) {
     var map1 = {},
         map2 = {},
@@ -176,11 +207,11 @@ function simplify(name1, name2) {
  * exports
  ***************/
 module.exports = {
-    Conditions: Conditions,
-    Con: Con,
+    Conditions: Conditions, 
+    Keywords: Keywords,
+    Con: Con, 
     Line: Line,
     LineSet: LineSet,
-    Keywords: Keywords,
     State: State,
     Candidate: Candidate,
     Party: Party
